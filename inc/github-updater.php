@@ -16,6 +16,8 @@ final class DV_Visual_GitHub_Updater {
 	const OPTION_KEY   = 'dv_visual_github_updater';
 	const CACHE_KEY    = 'dv_visual_github_release';
 	const SETTINGS_SLUG = 'dv-visual-github-updates';
+	const GITHUB_OWNER = 'Diniz-visual';
+	const GITHUB_REPOSITORY = 'dv-visual';
 
 	/** @var DV_Visual_GitHub_Updater|null */
 	private static $instance = null;
@@ -60,14 +62,24 @@ final class DV_Visual_GitHub_Updater {
 	 */
 	private function get_settings() {
 		$defaults = array(
-			'owner'        => '',
-			'repository'   => '',
+			'owner'        => self::GITHUB_OWNER,
+			'repository'   => self::GITHUB_REPOSITORY,
 			'token'        => '',
 			'prereleases'  => 0,
 		);
 
 		$stored = get_option( self::OPTION_KEY, array() );
-		return wp_parse_args( is_array( $stored ) ? $stored : array(), $defaults );
+		$settings = wp_parse_args( is_array( $stored ) ? $stored : array(), $defaults );
+
+		// Repository is intentionally pinned in the theme so updates can only come
+		// from the official DV Visual repository. Never source-control a PAT.
+		$settings['owner'] = self::GITHUB_OWNER;
+		$settings['repository'] = self::GITHUB_REPOSITORY;
+
+		// Authentication is managed by the theme settings screen and stored
+		// in WordPress options. The repository itself is pinned above.
+
+		return $settings;
 	}
 
 	private function is_configured() {
@@ -181,7 +193,21 @@ final class DV_Visual_GitHub_Updater {
 			'package'      => isset( $data['zipball_url'] ) ? esc_url_raw( $data['zipball_url'] ) : '',
 			'body'         => isset( $data['body'] ) ? wp_kses_post( $data['body'] ) : '',
 			'published_at' => isset( $data['published_at'] ) ? sanitize_text_field( $data['published_at'] ) : '',
+			'assets'       => isset( $data['assets'] ) && is_array( $data['assets'] ) ? $data['assets'] : array(),
 		);
+
+		// Prefer a release asset explicitly built for WordPress when available.
+		// This avoids installing repository-only files or a nested project root.
+		foreach ( $normalized['assets'] as $asset ) {
+			if ( ! is_array( $asset ) || empty( $asset['name'] ) || empty( $asset['url'] ) ) {
+				continue;
+			}
+			$name = strtolower( (string) $asset['name'] );
+			if ( in_array( $name, array( 'dv-visual.zip', 'dv-visual-theme.zip', 'theme-dv-visual.zip' ), true ) ) {
+				$normalized['package'] = esc_url_raw( $asset['url'] );
+				break;
+			}
+		}
 
 		set_site_transient( self::CACHE_KEY, $normalized, 15 * MINUTE_IN_SECONDS );
 		return $normalized;
@@ -268,7 +294,14 @@ final class DV_Visual_GitHub_Updater {
 		if ( ! isset( $args['headers'] ) || ! is_array( $args['headers'] ) ) {
 			$args['headers'] = array();
 		}
-		$args['headers'] = array_merge( $args['headers'], $this->github_headers() );
+
+		$headers = $this->github_headers();
+		// GitHub release assets require octet-stream to return the binary file.
+		if ( false !== strpos( $url, '/releases/assets/' ) ) {
+			$headers['Accept'] = 'application/octet-stream';
+		}
+
+		$args['headers'] = array_merge( $args['headers'], $headers );
 		return $args;
 	}
 
@@ -287,25 +320,95 @@ final class DV_Visual_GitHub_Updater {
 			return $source;
 		}
 
-		$desired = trailingslashit( $remote_source ) . $this->theme_slug . '/';
-		if ( untrailingslashit( $source ) === untrailingslashit( $desired ) ) {
-			return $source;
-		}
-
 		global $wp_filesystem;
 		if ( ! $wp_filesystem ) {
-			return $source;
+			return new WP_Error( 'dv_github_filesystem_unavailable', __( 'O WordPress não conseguiu acessar o sistema de arquivos para validar a atualização.', 'dv-visual' ) );
+		}
+
+		/*
+		 * GitHub can deliver either:
+		 * 1) OWNER-REPO-HASH/style.css
+		 * 2) OWNER-REPO-HASH/dv-visual/style.css
+		 * 3) A custom release ZIP whose first folder is the theme itself.
+		 * Locate the real theme root before WordPress replaces the active theme.
+		 */
+		$candidates = array( untrailingslashit( $source ) );
+		$children = $wp_filesystem->dirlist( untrailingslashit( $source ) );
+		if ( is_array( $children ) ) {
+			foreach ( $children as $name => $info ) {
+				if ( isset( $info['type'] ) && 'd' === $info['type'] ) {
+					$candidates[] = trailingslashit( untrailingslashit( $source ) ) . $name;
+				}
+			}
+		}
+
+		$theme_root = '';
+		foreach ( array_unique( $candidates ) as $candidate ) {
+			if ( $this->is_valid_theme_package( $candidate ) ) {
+				$theme_root = untrailingslashit( $candidate );
+				break;
+			}
+		}
+
+		if ( '' === $theme_root ) {
+			return new WP_Error(
+				'dv_github_invalid_theme_package',
+				__( 'Atualização cancelada: o pacote publicado no GitHub não contém uma instalação completa do tema DV Visual. A versão atualmente instalada foi preservada.', 'dv-visual' )
+			);
+		}
+
+		$desired = trailingslashit( $remote_source ) . $this->theme_slug;
+		if ( untrailingslashit( $theme_root ) === untrailingslashit( $desired ) ) {
+			return trailingslashit( $theme_root );
 		}
 
 		if ( $wp_filesystem->exists( $desired ) ) {
 			$wp_filesystem->delete( $desired, true );
 		}
 
-		if ( ! $wp_filesystem->move( $source, $desired, true ) ) {
-			return new WP_Error( 'dv_github_source_move_failed', __( 'Não foi possível preparar o pacote do GitHub para atualização do tema.', 'dv-visual' ) );
+		if ( ! $wp_filesystem->move( $theme_root, $desired, true ) ) {
+			return new WP_Error( 'dv_github_source_move_failed', __( 'Não foi possível preparar o pacote do GitHub para atualização do tema. O tema instalado não foi substituído.', 'dv-visual' ) );
 		}
 
-		return $desired;
+		return trailingslashit( $desired );
+	}
+
+	/**
+	 * Ensure a downloaded package is really the complete DV Visual theme before
+	 * WordPress is allowed to replace the active installation.
+	 *
+	 * @param string $root Candidate package root.
+	 * @return bool
+	 */
+	private function is_valid_theme_package( $root ) {
+		global $wp_filesystem;
+		if ( ! $wp_filesystem ) {
+			return false;
+		}
+
+		$root = trailingslashit( $root );
+		$required_files = array(
+			'style.css',
+			'functions.php',
+			'front-page.php',
+			'header.php',
+			'footer.php',
+			'inc/github-updater.php',
+			'template-parts/pages/home.php',
+		);
+
+		foreach ( $required_files as $file ) {
+			if ( ! $wp_filesystem->is_file( $root . $file ) ) {
+				return false;
+			}
+		}
+
+		$style = $wp_filesystem->get_contents( $root . 'style.css' );
+		if ( false === $style || false === stripos( $style, 'Theme Name: DV Visual' ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function clear_cache_after_update( $upgrader, $options ) {
@@ -331,10 +434,18 @@ final class DV_Visual_GitHub_Updater {
 		delete_site_transient( self::CACHE_KEY );
 		delete_site_transient( 'update_themes' );
 
+		$current = get_option( self::OPTION_KEY, array() );
+		$current = is_array( $current ) ? $current : array();
+		$token = isset( $current['token'] ) ? sanitize_text_field( $current['token'] ) : '';
+
+		if ( isset( $input['token'] ) ) {
+			$token = sanitize_text_field( trim( (string) $input['token'] ) );
+		}
+
 		return array(
-			'owner'       => isset( $input['owner'] ) ? sanitize_text_field( $input['owner'] ) : '',
-			'repository'  => isset( $input['repository'] ) ? sanitize_text_field( $input['repository'] ) : '',
-			'token'       => isset( $input['token'] ) ? sanitize_text_field( $input['token'] ) : '',
+			'owner'       => self::GITHUB_OWNER,
+			'repository'  => self::GITHUB_REPOSITORY,
+			'token'       => $token,
 			'prereleases' => empty( $input['prereleases'] ) ? 0 : 1,
 		);
 	}
@@ -360,7 +471,7 @@ final class DV_Visual_GitHub_Updater {
 		?>
 		<div class="wrap">
 			<h1><?php esc_html_e( 'DV Visual — Atualizações via GitHub', 'dv-visual' ); ?></h1>
-			<p><?php esc_html_e( 'Conecte este tema a um repositório GitHub. Releases novas aparecerão no atualizador nativo do WordPress.', 'dv-visual' ); ?></p>
+			<p><?php esc_html_e( 'Este tema está conectado diretamente ao repositório oficial Diniz-visual/dv-visual. Releases novas aparecerão no atualizador nativo do WordPress.', 'dv-visual' ); ?></p>
 
 			<?php if ( isset( $_GET['dv_checked'] ) ) : // phpcs:ignore WordPress.Security.NonceVerification.Recommended ?>
 				<div class="notice notice-success is-dismissible"><p><?php esc_html_e( 'Verificação de atualização concluída.', 'dv-visual' ); ?></p></div>
@@ -371,17 +482,17 @@ final class DV_Visual_GitHub_Updater {
 				<table class="form-table" role="presentation">
 					<tr>
 						<th scope="row"><label for="dv-gh-owner"><?php esc_html_e( 'Usuário / organização', 'dv-visual' ); ?></label></th>
-						<td><input id="dv-gh-owner" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[owner]" value="<?php echo esc_attr( (string) $this->settings['owner'] ); ?>" placeholder="seu-usuario" autocomplete="off"></td>
+						<td><code><?php echo esc_html( self::GITHUB_OWNER ); ?></code><input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[owner]" value="<?php echo esc_attr( self::GITHUB_OWNER ); ?>"></td>
 					</tr>
 					<tr>
 						<th scope="row"><label for="dv-gh-repository"><?php esc_html_e( 'Repositório', 'dv-visual' ); ?></label></th>
-						<td><input id="dv-gh-repository" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[repository]" value="<?php echo esc_attr( (string) $this->settings['repository'] ); ?>" placeholder="dv-visual" autocomplete="off"></td>
+						<td><code><?php echo esc_html( self::GITHUB_REPOSITORY ); ?></code><input type="hidden" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[repository]" value="<?php echo esc_attr( self::GITHUB_REPOSITORY ); ?>"></td>
 					</tr>
 					<tr>
-						<th scope="row"><label for="dv-gh-token"><?php esc_html_e( 'Token GitHub', 'dv-visual' ); ?></label></th>
+						<th scope="row"><label for="dv-gh-token"><?php esc_html_e( 'Fine-grained token', 'dv-visual' ); ?></label></th>
 						<td>
 							<input id="dv-gh-token" type="password" class="regular-text" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[token]" value="<?php echo esc_attr( (string) $this->settings['token'] ); ?>" autocomplete="new-password">
-							<p class="description"><?php esc_html_e( 'Opcional para repositório público. Para repositório privado, use um fine-grained token vinculado ao proprietário correto, com acesso a este repositório e Repository permissions → Contents: Read-only. Metadata: Read é concedido automaticamente.', 'dv-visual' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Salvo diretamente nas configurações deste tema no WordPress. Para repositório privado, use um Fine-grained Personal Access Token com acesso Read-only ao repositório dv-visual.', 'dv-visual' ); ?></p>
 						</td>
 					</tr>
 					<tr>
@@ -389,7 +500,7 @@ final class DV_Visual_GitHub_Updater {
 						<td><label><input type="checkbox" name="<?php echo esc_attr( self::OPTION_KEY ); ?>[prereleases]" value="1" <?php checked( ! empty( $this->settings['prereleases'] ) ); ?>> <?php esc_html_e( 'Aceitar prereleases (beta/RC)', 'dv-visual' ); ?></label></td>
 					</tr>
 				</table>
-				<?php submit_button( __( 'Salvar conexão', 'dv-visual' ) ); ?>
+				<?php submit_button( __( 'Salvar configurações', 'dv-visual' ) ); ?>
 			</form>
 
 			<hr>

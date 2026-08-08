@@ -139,3 +139,14 @@ A partir da versão 4.28.0, o tema pode receber atualizações pelo atualizador 
 5. O WordPress passa a mostrar a nova versão em **Painel → Atualizações** e **Aparência → Temas**.
 
 O pacote ZIP padrão gerado pelo GitHub é normalizado automaticamente pelo updater para manter a pasta estável `dv-visual` e evitar temas duplicados.
+
+
+### Repositório oficial e autenticação privada (4.28.2+)
+
+O updater é fixado em `Diniz-visual/dv-visual`. Para repositório privado, NÃO coloque o PAT no código do tema nem faça commit dele. Defina o token no `wp-config.php`, antes da linha “That's all, stop editing”: 
+
+```php
+define( 'DV_VISUAL_GITHUB_TOKEN', 'github_pat_SEU_NOVO_TOKEN' );
+```
+
+Use um Fine-grained PAT com acesso somente ao repositório `dv-visual` e `Contents: Read-only`.
