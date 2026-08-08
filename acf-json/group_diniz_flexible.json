@@ -1,0 +1,103 @@
+{
+  "key": "group_diniz_flexible",
+  "title": "DV Visual — Construtor de seções",
+  "fields": [
+    {
+      "key":"field_page_sections",
+      "label":"Seções da página",
+      "name":"page_sections",
+      "type":"flexible_content",
+      "button_label":"Adicionar seção",
+      "layouts":{
+        "layout_intro":{"key":"layout_intro","name":"intro","label":"Introdução editorial","display":"block","sub_fields":[
+          {"key":"field_intro_kicker","label":"Sobretítulo","name":"kicker","type":"text"},
+          {"key":"field_intro_title","label":"Título","name":"title","type":"textarea","rows":2},
+          {"key":"field_intro_text","label":"Texto","name":"text","type":"wysiwyg","tabs":"visual","toolbar":"basic","media_upload":0},
+          {"key":"field_intro_media","label":"Imagem ou vídeo","name":"media","type":"file","return_format":"id","mime_types":"jpg,jpeg,png,webp,mp4"}
+        ]},
+        "layout_pain_points":{"key":"layout_pain_points","name":"pain_points","label":"Dores / Problemas","display":"block","sub_fields":[
+          {"key":"field_pain_title","label":"Título","name":"title","type":"text"},
+          {"key":"field_pain_intro","label":"Introdução","name":"intro","type":"textarea","rows":2},
+          {"key":"field_pain_items","label":"Dores","name":"items","type":"repeater","min":2,"max":6,"layout":"row","button_label":"Adicionar dor","sub_fields":[
+            {"key":"field_pain_icon","label":"Ícone","name":"icon","type":"image","return_format":"id","preview_size":"thumbnail"},
+            {"key":"field_pain_item_title","label":"Título","name":"title","type":"text"},
+            {"key":"field_pain_item_text","label":"Texto","name":"text","type":"textarea","rows":2}
+          ]}
+        ]},
+        "layout_services":{"key":"layout_services","name":"services_grid","label":"Grade de soluções","display":"block","sub_fields":[
+          {"key":"field_services_kicker","label":"Sobretítulo","name":"kicker","type":"text"},
+          {"key":"field_services_title","label":"Título","name":"title","type":"text"},
+          {"key":"field_services_text","label":"Introdução","name":"text","type":"textarea","rows":3},
+          {"key":"field_services_items","label":"Soluções","name":"items","type":"relationship","post_type":["page"],"filters":["search"],"return_format":"id"}
+        ]},
+        "layout_products":{"key":"layout_products","name":"products","label":"Produtos / SaaS","display":"block","sub_fields":[
+          {"key":"field_products_title","label":"Título","name":"title","type":"text"},
+          {"key":"field_products_items","label":"Produtos","name":"items","type":"repeater","layout":"row","button_label":"Adicionar produto","sub_fields":[
+            {"key":"field_product_badge","label":"Categoria","name":"badge","type":"text"},
+            {"key":"field_product_logo","label":"Logo","name":"logo","type":"image","return_format":"id"},
+            {"key":"field_product_title","label":"Título","name":"title","type":"text"},
+            {"key":"field_product_text","label":"Descrição","name":"text","type":"textarea","rows":2},
+            {"key":"field_product_features","label":"Recursos","name":"features","type":"textarea","instructions":"Um recurso por linha","rows":3},
+            {"key":"field_product_link","label":"Link","name":"link","type":"link","return_format":"array"}
+          ]}
+        ]},
+        "layout_metrics":{"key":"layout_metrics","name":"metrics","label":"Métricas de resultado","display":"block","sub_fields":[
+          {"key":"field_metrics_title","label":"Título","name":"title","type":"text"},
+          {"key":"field_metrics_items","label":"Métricas","name":"items","type":"repeater","min":2,"max":6,"layout":"table","sub_fields":[
+            {"key":"field_metrics_value","label":"Valor","name":"value","type":"text"},
+            {"key":"field_metrics_label","label":"Legenda","name":"label","type":"text"}
+          ]}
+        ]},
+        "layout_cases":{"key":"layout_cases","name":"cases","label":"Cases / Portfólio","display":"block","sub_fields":[
+          {"key":"field_cases_title","label":"Título","name":"title","type":"text"},
+          {"key":"field_cases_posts","label":"Cases","name":"posts","type":"relationship","post_type":["portfolio"],"filters":["search","taxonomy"],"return_format":"id"}
+        ]},
+        "layout_comparison":{"key":"layout_comparison","name":"comparison","label":"Tabela comparativa","display":"block","sub_fields":[
+          {"key":"field_comparison_title","label":"Título","name":"title","type":"text"},
+          {"key":"field_comparison_columns","label":"Colunas","name":"columns","type":"repeater","layout":"table","button_label":"Adicionar coluna","sub_fields":[{"key":"field_comparison_column_label","label":"Nome","name":"label","type":"text"}]},
+          {"key":"field_comparison_rows","label":"Linhas","name":"rows","type":"repeater","layout":"row","button_label":"Adicionar linha","sub_fields":[
+            {"key":"field_comparison_feature","label":"Recurso","name":"feature","type":"text"},
+            {"key":"field_comparison_values","label":"Valores separados por |","name":"values","type":"text"}
+          ]}
+        ]},
+        "layout_process":{"key":"layout_process","name":"process","label":"Processo / Etapas","display":"block","sub_fields":[
+          {"key":"field_process_title","label":"Título","name":"title","type":"text"},
+          {"key":"field_process_steps","label":"Etapas","name":"steps","type":"repeater","min":2,"max":8,"layout":"row","sub_fields":[
+            {"key":"field_process_step_title","label":"Título","name":"title","type":"text"},
+            {"key":"field_process_step_text","label":"Texto","name":"text","type":"textarea","rows":2}
+          ]}
+        ]},
+        "layout_testimonials":{"key":"layout_testimonials","name":"testimonials","label":"Depoimentos","display":"block","sub_fields":[
+          {"key":"field_testimonials_title","label":"Título","name":"title","type":"text"},
+          {"key":"field_testimonials_items","label":"Depoimentos","name":"items","type":"relationship","post_type":["testimonial"],"filters":["search"],"return_format":"id"}
+        ]},
+        "layout_faq":{"key":"layout_faq","name":"faq","label":"Perguntas frequentes","display":"block","sub_fields":[
+          {"key":"field_faq_title","label":"Título","name":"title","type":"text"},
+          {"key":"field_faq_items","label":"Perguntas","name":"items","type":"repeater","layout":"row","button_label":"Adicionar pergunta","sub_fields":[
+            {"key":"field_faq_question","label":"Pergunta","name":"question","type":"text"},
+            {"key":"field_faq_answer","label":"Resposta","name":"answer","type":"wysiwyg","toolbar":"basic","media_upload":0}
+          ]}
+        ]},
+        "layout_logo_cloud":{"key":"layout_logo_cloud","name":"logo_cloud","label":"Logos de clientes","display":"block","sub_fields":[
+          {"key":"field_logos_title","label":"Título","name":"title","type":"text"},
+          {"key":"field_logos_gallery","label":"Logos","name":"logos","type":"gallery","return_format":"id","preview_size":"thumbnail"}
+        ]},
+        "layout_cta":{"key":"layout_cta","name":"cta","label":"Chamada para ação","display":"block","sub_fields":[
+          {"key":"field_cta_style","label":"Estilo","name":"style","type":"select","choices":{"orange":"Laranja","dark":"Escuro","light":"Claro"}},
+          {"key":"field_cta_title","label":"Título","name":"title","type":"text"},
+          {"key":"field_cta_text","label":"Texto","name":"text","type":"textarea","rows":2},
+          {"key":"field_cta_primary","label":"Botão principal","name":"primary","type":"link","return_format":"array"},
+          {"key":"field_cta_secondary","label":"Botão secundário","name":"secondary","type":"link","return_format":"array"}
+        ]}
+      }
+    }
+  ],
+  "location": [[{"param":"post_type","operator":"==","value":"page"}]],
+  "menu_order": 10,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "active": true,
+  "show_in_rest": 1,
+  "modified": 1784920002
+}

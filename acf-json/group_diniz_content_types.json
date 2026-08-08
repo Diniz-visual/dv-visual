@@ -1,0 +1,41 @@
+{
+  "key": "group_diniz_content_types",
+  "title": "DV Visual — Dados do conteúdo",
+  "fields": [
+    {"key":"field_content_badge","label":"Categoria / Badge","name":"content_badge","type":"text","instructions":"Use um termo curto e reconhecível, com até 4 palavras."},
+    {"key":"field_content_metric","label":"Métrica principal","name":"content_metric","type":"text","placeholder":"+142%"},
+    {"key":"field_content_metric_label","label":"Legenda da métrica","name":"content_metric_label","type":"text"},
+    {"key":"field_content_summary","label":"Resumo curto","name":"content_summary","type":"textarea","rows":3,"maxlength":220,"instructions":"Explique a entrega e o benefício em 1 ou 2 frases. Prefira entre 90 e 180 caracteres, sem repetir o título."},
+    {"key":"field_content_logo","label":"Logo","name":"content_logo","type":"image","return_format":"id","preview_size":"medium"},
+    {"key":"field_content_gallery","label":"Galeria","name":"content_gallery","type":"gallery","return_format":"id","preview_size":"medium"},
+    {"key":"field_content_url","label":"URL externa","name":"content_url","type":"url"},
+    {"key":"field_content_features","label":"Recursos / Resultados","name":"content_features","type":"repeater","layout":"table","sub_fields":[
+      {"key":"field_content_feature_title","label":"Título","name":"title","type":"text","instructions":"Comece pelo benefício ou resultado."},
+      {"key":"field_content_feature_text","label":"Descrição","name":"text","type":"text","instructions":"Use uma frase objetiva, específica e fácil de escanear."}
+    ]},
+    {"key":"field_person_role","label":"Cargo / Função","name":"person_role","type":"text"},
+    {"key":"field_person_company","label":"Empresa","name":"person_company","type":"text"},
+    {"key":"field_person_avatar","label":"Foto / Avatar","name":"person_avatar","type":"image","return_format":"id","preview_size":"thumbnail"},
+    {"key":"field_rating","label":"Avaliação","name":"rating","type":"number","min":1,"max":5,"default_value":5}
+  ],
+  "location": [
+    [{"param":"post_type","operator":"==","value":"portfolio"}],
+    [{"param":"post_type","operator":"==","value":"product"}],
+    [{"param":"post_type","operator":"==","value":"service"}],
+    [{"param":"post_type","operator":"==","value":"tool"}],
+    [{"param":"post_type","operator":"==","value":"guide"}],
+    [{"param":"post_type","operator":"==","value":"help_article"}],
+    [{"param":"post_type","operator":"==","value":"job"}],
+    [{"param":"post_type","operator":"==","value":"testimonial"}],
+    [{"param":"post_type","operator":"==","value":"team"}],
+    [{"param":"post_type","operator":"==","value":"client"}],
+    [{"param":"post_type","operator":"==","value":"award"}]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "active": true,
+  "show_in_rest": 1,
+  "modified": 1784920003
+}

@@ -1,0 +1,369 @@
+{
+  "key": "group_dv_home_carousels",
+  "title": "DV Visual — Hero e carrosséis",
+  "fields": [
+    {
+      "key": "field_dv_hero_tab",
+      "label": "Hero da página inicial",
+      "type": "tab"
+    },
+    {
+      "key": "field_dv_hero_slides",
+      "label": "Slides antigos do hero (fallback)",
+      "name": "dv_hero_slides",
+      "type": "repeater",
+      "instructions": "Compatibilidade com versões anteriores. Os novos slides devem ser cadastrados em Home — Slides. Esta lista só aparece no site quando não existir nenhum slide publicado no novo gerenciador.",
+      "layout": "block",
+      "button_label": "Adicionar slide",
+      "min": 0,
+      "max": 10,
+      "collapsed": "field_dv_hero_slide_title",
+      "sub_fields": [
+        {
+          "key": "field_dv_hero_slide_kicker",
+          "label": "Selo / sobretítulo",
+          "name": "kicker",
+          "type": "text",
+          "default_value": "Estratégia · Design · Digital"
+        },
+        {
+          "key": "field_dv_hero_slide_title",
+          "label": "Título",
+          "name": "title",
+          "type": "textarea",
+          "rows": 2,
+          "new_lines": "",
+          "required": 1
+        },
+        {
+          "key": "field_dv_hero_slide_highlight",
+          "label": "Trecho em destaque",
+          "name": "highlight",
+          "type": "text",
+          "instructions": "Digite um trecho que exista no título."
+        },
+        {
+          "key": "field_dv_hero_slide_text",
+          "label": "Texto de apoio",
+          "name": "text",
+          "type": "textarea",
+          "rows": 3
+        },
+        {
+          "key": "field_dv_hero_slide_primary_cta",
+          "label": "CTA principal — texto, link e alvo",
+          "name": "primary_cta",
+          "type": "link",
+          "instructions": "Preencha o texto do botão, o endereço e escolha se o link abre na mesma página ou em nova aba.",
+          "return_format": "array"
+        },
+        {
+          "key": "field_dv_hero_slide_secondary_cta",
+          "label": "CTA secundário — texto, link e alvo",
+          "name": "secondary_cta",
+          "type": "link",
+          "instructions": "Preencha o texto do botão, o endereço e escolha se o link abre na mesma página ou em nova aba.",
+          "return_format": "array"
+        },
+        {
+          "key": "field_dv_hero_slide_image",
+          "label": "Arte em primeiro plano — desktop (opcional)",
+          "name": "image",
+          "type": "image",
+          "instructions": "Elemento recortado opcional exibido sobre o banner, preferencialmente PNG ou WebP transparente. Recomendado: 1200 × 900 px.",
+          "return_format": "id",
+          "preview_size": "large",
+          "library": "all"
+        },
+        {
+          "key": "field_dv_hero_slide_image_mobile",
+          "label": "Arte em primeiro plano — mobile (opcional)",
+          "name": "image_mobile",
+          "type": "image",
+          "instructions": "Versão opcional para celulares de até 767 px. Se ficar vazia, será usada a arte desktop.",
+          "return_format": "id",
+          "preview_size": "medium",
+          "library": "all"
+        },
+        {
+          "key": "field_dv_hero_slide_image_position_desktop",
+          "label": "Enquadramento do projeto — desktop",
+          "name": "image_position_desktop",
+          "type": "select",
+          "choices": {
+            "center center": "Centro",
+            "center top": "Topo",
+            "center bottom": "Base",
+            "left center": "Esquerda",
+            "right center": "Direita"
+          },
+          "default_value": "center center",
+          "ui": 1,
+          "return_format": "value"
+        },
+        {
+          "key": "field_dv_hero_slide_image_position_mobile",
+          "label": "Enquadramento do projeto — mobile",
+          "name": "image_position_mobile",
+          "type": "select",
+          "choices": {
+            "center center": "Centro",
+            "center top": "Topo",
+            "center bottom": "Base",
+            "left center": "Esquerda",
+            "right center": "Direita"
+          },
+          "default_value": "center center",
+          "ui": 1,
+          "return_format": "value"
+        },
+        {
+          "key": "field_dv_hero_slide_background",
+          "label": "Banner principal — desktop",
+          "name": "background",
+          "type": "image",
+          "instructions": "Imagem que ocupa toda a largura do Hero em tablets, notebooks e monitores. Recomendado: 1920 × 900 px.",
+          "return_format": "id",
+          "preview_size": "large",
+          "library": "all"
+        },
+        {
+          "key": "field_dv_hero_slide_background_mobile",
+          "label": "Banner principal — mobile",
+          "name": "background_mobile",
+          "type": "image",
+          "instructions": "Banner vertical exclusivo para celulares de até 767 px. Recomendado: 900 × 1200 px. Se ficar vazio, será usado o banner desktop.",
+          "return_format": "id",
+          "preview_size": "medium",
+          "library": "all"
+        },
+        {
+          "key": "field_dv_hero_slide_background_position_desktop",
+          "label": "Enquadramento do fundo — desktop",
+          "name": "background_position_desktop",
+          "type": "select",
+          "choices": {
+            "center center": "Centro",
+            "center top": "Topo",
+            "center bottom": "Base",
+            "left center": "Esquerda",
+            "right center": "Direita"
+          },
+          "default_value": "center center",
+          "ui": 1,
+          "return_format": "value"
+        },
+        {
+          "key": "field_dv_hero_slide_background_position_mobile",
+          "label": "Enquadramento do fundo — mobile",
+          "name": "background_position_mobile",
+          "type": "select",
+          "choices": {
+            "center center": "Centro",
+            "center top": "Topo",
+            "center bottom": "Base",
+            "left center": "Esquerda",
+            "right center": "Direita"
+          },
+          "default_value": "center center",
+          "ui": 1,
+          "return_format": "value"
+        },
+        {
+          "key": "field_dv_hero_slide_overlay_opacity",
+          "label": "Escurecimento sobre a imagem",
+          "name": "overlay_opacity",
+          "type": "range",
+          "instructions": "Controla a leitura do texto sobre o banner. Use valores menores quando a própria imagem já for escura.",
+          "default_value": 58,
+          "min": 0,
+          "max": 90,
+          "step": 1,
+          "append": "%"
+        },
+        {
+          "key": "field_dv_hero_slide_text_color",
+          "label": "Cor dos textos",
+          "name": "text_color",
+          "type": "color_picker",
+          "default_value": "#ffffff",
+          "enable_opacity": 0,
+          "return_format": "string"
+        },
+        {
+          "key": "field_dv_hero_slide_theme",
+          "label": "Variação de cor",
+          "name": "theme",
+          "type": "button_group",
+          "choices": {
+            "aqua": "Turquesa",
+            "teal": "Verde petróleo",
+            "lime": "Lima",
+            "navy": "Azul profundo"
+          },
+          "default_value": "aqua",
+          "layout": "horizontal"
+        },
+        {
+          "key": "field_dv_hero_slide_project_label",
+          "label": "Rótulo do projeto",
+          "name": "project_label",
+          "type": "text",
+          "default_value": "Projeto em destaque"
+        },
+        {
+          "key": "field_dv_hero_slide_project_title",
+          "label": "Nome do projeto",
+          "name": "project_title",
+          "type": "text"
+        },
+        {
+          "key": "field_dv_hero_slide_project_category",
+          "label": "Categoria do projeto",
+          "name": "project_category",
+          "type": "text"
+        },
+        {
+          "key": "field_dv_hero_slide_metric_value",
+          "label": "Métrica",
+          "name": "metric_value",
+          "type": "text",
+          "placeholder": "+68%"
+        },
+        {
+          "key": "field_dv_hero_slide_metric_label",
+          "label": "Legenda da métrica",
+          "name": "metric_label",
+          "type": "text",
+          "placeholder": "reconhecimento"
+        },
+        {
+          "key": "field_dv_hero_slide_duration",
+          "label": "Tempo deste slide",
+          "name": "duration",
+          "type": "number",
+          "instructions": "Tempo em milissegundos. Deixe vazio para usar o tempo geral.",
+          "min": 2500,
+          "max": 20000,
+          "step": 100,
+          "append": "ms"
+        }
+      ]
+    },
+    {
+      "key": "field_dv_hero_autoplay",
+      "label": "Troca automática do hero",
+      "name": "dv_hero_autoplay",
+      "type": "true_false",
+      "default_value": 1,
+      "ui": 1
+    },
+    {
+      "key": "field_dv_hero_delay",
+      "label": "Tempo geral do hero",
+      "name": "dv_hero_delay",
+      "type": "number",
+      "default_value": 5000,
+      "min": 2500,
+      "max": 20000,
+      "step": 100,
+      "append": "ms"
+    },
+    {
+      "key": "field_dv_brands_tab",
+      "label": "Marcas",
+      "type": "tab"
+    },
+    {
+      "key": "field_dv_brands_title",
+      "label": "Título da faixa",
+      "name": "dv_brands_title",
+      "type": "text",
+      "default_value": "Marcas que confiam no nosso trabalho"
+    },
+    {
+      "key": "field_dv_brands_autoplay",
+      "label": "Troca automática das marcas",
+      "name": "dv_brands_autoplay",
+      "type": "true_false",
+      "default_value": 1,
+      "ui": 1
+    },
+    {
+      "key": "field_dv_brands_delay",
+      "label": "Intervalo do carrossel de marcas",
+      "name": "dv_brands_delay",
+      "type": "number",
+      "default_value": 2400,
+      "min": 1200,
+      "max": 12000,
+      "step": 100,
+      "append": "ms"
+    },
+    {
+      "key": "field_dv_software_tab",
+      "label": "Softwares utilizados",
+      "type": "tab"
+    },
+    {
+      "key": "field_dv_software_kicker",
+      "label": "Selo da seção",
+      "name": "dv_software_kicker",
+      "type": "text",
+      "default_value": "Tecnologia no processo"
+    },
+    {
+      "key": "field_dv_software_title",
+      "label": "Título da seção",
+      "name": "dv_software_title",
+      "type": "text",
+      "default_value": "Softwares que usamos todos os dias."
+    },
+    {
+      "key": "field_dv_software_text",
+      "label": "Texto de apoio",
+      "name": "dv_software_text",
+      "type": "textarea",
+      "rows": 2,
+      "maxlength": 180,
+      "default_value": "Ferramentas profissionais escolhidas para dar precisão, consistência e agilidade a cada entrega."
+    },
+    {
+      "key": "field_dv_software_autoplay",
+      "label": "Troca automática dos softwares",
+      "name": "dv_software_autoplay",
+      "type": "true_false",
+      "default_value": 1,
+      "ui": 1
+    },
+    {
+      "key": "field_dv_software_delay",
+      "label": "Intervalo do carrossel de softwares",
+      "name": "dv_software_delay",
+      "type": "number",
+      "default_value": 3000,
+      "min": 1600,
+      "max": 12000,
+      "step": 100,
+      "append": "ms"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "options_page",
+        "operator": "==",
+        "value": "dv-visual-hero-carousels"
+      }
+    ]
+  ],
+  "menu_order": 1,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "active": true,
+  "private": true,
+  "show_in_rest": 1,
+  "modified": 1785702600
+}

@@ -1,0 +1,307 @@
+{
+  "key": "group_dv_home_slides",
+  "title": "DV Visual — Conteúdo do slide do Hero",
+  "fields": [
+    {
+      "key": "field_dv_home_slide_content_tab",
+      "label": "Textos e botões",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_dv_home_slide_kicker",
+      "label": "Selo / sobretítulo",
+      "name": "dv_home_slide_kicker",
+      "type": "text",
+      "default_value": "Estratégia · Design · Digital"
+    },
+    {
+      "key": "field_dv_home_slide_highlight",
+      "label": "Trecho do título em destaque",
+      "name": "dv_home_slide_highlight",
+      "type": "text",
+      "instructions": "Digite exatamente um trecho existente no título do slide.",
+      "placeholder": "ser lembrada."
+    },
+    {
+      "key": "field_dv_home_slide_text",
+      "label": "Texto de apoio",
+      "name": "dv_home_slide_text",
+      "type": "textarea",
+      "rows": 3,
+      "new_lines": ""
+    },
+    {
+      "key": "field_dv_home_slide_primary_cta",
+      "label": "CTA principal",
+      "name": "dv_home_slide_primary_cta",
+      "type": "link",
+      "instructions": "Defina o texto, o endereço e se o botão abre em uma nova aba.",
+      "return_format": "array"
+    },
+    {
+      "key": "field_dv_home_slide_secondary_cta",
+      "label": "CTA secundário",
+      "name": "dv_home_slide_secondary_cta",
+      "type": "link",
+      "instructions": "Opcional. Defina texto, endereço e alvo.",
+      "return_format": "array"
+    },
+    {
+      "key": "field_dv_home_slide_media_tab",
+      "label": "Imagens desktop e mobile",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_dv_home_slide_background",
+      "label": "Banner principal — desktop",
+      "name": "dv_home_slide_background",
+      "type": "image",
+      "instructions": "Imagem horizontal que ocupa o Hero. Recomendado: 1920 × 900 px.",
+      "return_format": "id",
+      "preview_size": "large",
+      "library": "all"
+    },
+    {
+      "key": "field_dv_home_slide_background_mobile",
+      "label": "Banner principal — mobile",
+      "name": "dv_home_slide_background_mobile",
+      "type": "image",
+      "instructions": "Imagem vertical exclusiva para celulares. Recomendado: 900 × 1200 px. Se vazia, usa o banner desktop.",
+      "return_format": "id",
+      "preview_size": "medium",
+      "library": "all"
+    },
+    {
+      "key": "field_dv_home_slide_image",
+      "label": "Arte em primeiro plano — desktop",
+      "name": "dv_home_slide_image",
+      "type": "image",
+      "instructions": "Elemento opcional sobre o banner. Prefira PNG ou WebP transparente, 1200 × 900 px.",
+      "return_format": "id",
+      "preview_size": "large",
+      "library": "all"
+    },
+    {
+      "key": "field_dv_home_slide_image_mobile",
+      "label": "Arte em primeiro plano — mobile",
+      "name": "dv_home_slide_image_mobile",
+      "type": "image",
+      "instructions": "Versão opcional para celulares. Se vazia, usa a arte desktop.",
+      "return_format": "id",
+      "preview_size": "medium",
+      "library": "all"
+    },
+    {
+      "key": "field_dv_home_slide_background_position_desktop",
+      "label": "Enquadramento do fundo — desktop",
+      "name": "dv_home_slide_background_position_desktop",
+      "type": "select",
+      "choices": {
+        "center center": "Centro",
+        "center top": "Topo",
+        "center bottom": "Base",
+        "left center": "Esquerda",
+        "right center": "Direita"
+      },
+      "default_value": "center center",
+      "ui": 1,
+      "return_format": "value",
+      "wrapper": {
+        "width": "50"
+      }
+    },
+    {
+      "key": "field_dv_home_slide_background_position_mobile",
+      "label": "Enquadramento do fundo — mobile",
+      "name": "dv_home_slide_background_position_mobile",
+      "type": "select",
+      "choices": {
+        "center center": "Centro",
+        "center top": "Topo",
+        "center bottom": "Base",
+        "left center": "Esquerda",
+        "right center": "Direita"
+      },
+      "default_value": "center center",
+      "ui": 1,
+      "return_format": "value",
+      "wrapper": {
+        "width": "50"
+      }
+    },
+    {
+      "key": "field_dv_home_slide_image_position_desktop",
+      "label": "Enquadramento da arte — desktop",
+      "name": "dv_home_slide_image_position_desktop",
+      "type": "select",
+      "choices": {
+        "center center": "Centro",
+        "center top": "Topo",
+        "center bottom": "Base",
+        "left center": "Esquerda",
+        "right center": "Direita"
+      },
+      "default_value": "center center",
+      "ui": 1,
+      "return_format": "value",
+      "wrapper": {
+        "width": "50"
+      }
+    },
+    {
+      "key": "field_dv_home_slide_image_position_mobile",
+      "label": "Enquadramento da arte — mobile",
+      "name": "dv_home_slide_image_position_mobile",
+      "type": "select",
+      "choices": {
+        "center center": "Centro",
+        "center top": "Topo",
+        "center bottom": "Base",
+        "left center": "Esquerda",
+        "right center": "Direita"
+      },
+      "default_value": "center center",
+      "ui": 1,
+      "return_format": "value",
+      "wrapper": {
+        "width": "50"
+      }
+    },
+    {
+      "key": "field_dv_home_slide_style_tab",
+      "label": "Estilo e informações",
+      "name": "",
+      "type": "tab",
+      "placement": "top"
+    },
+    {
+      "key": "field_dv_home_slide_overlay_opacity",
+      "label": "Escurecimento sobre a imagem",
+      "name": "dv_home_slide_overlay_opacity",
+      "type": "range",
+      "instructions": "Aumente quando o texto precisar de mais contraste.",
+      "default_value": 58,
+      "min": 0,
+      "max": 90,
+      "step": 1,
+      "append": "%",
+      "wrapper": {
+        "width": "50"
+      }
+    },
+    {
+      "key": "field_dv_home_slide_text_color",
+      "label": "Cor dos textos",
+      "name": "dv_home_slide_text_color",
+      "type": "color_picker",
+      "default_value": "#ffffff",
+      "enable_opacity": 0,
+      "return_format": "string",
+      "wrapper": {
+        "width": "50"
+      }
+    },
+    {
+      "key": "field_dv_home_slide_theme",
+      "label": "Variação de cor",
+      "name": "dv_home_slide_theme",
+      "type": "button_group",
+      "choices": {
+        "aqua": "Turquesa",
+        "teal": "Verde petróleo",
+        "lime": "Lima",
+        "navy": "Azul profundo"
+      },
+      "default_value": "aqua",
+      "layout": "horizontal",
+      "return_format": "value"
+    },
+    {
+      "key": "field_dv_home_slide_project_label",
+      "label": "Rótulo do projeto",
+      "name": "dv_home_slide_project_label",
+      "type": "text",
+      "default_value": "Projeto em destaque",
+      "wrapper": {
+        "width": "33"
+      }
+    },
+    {
+      "key": "field_dv_home_slide_project_title",
+      "label": "Nome do projeto",
+      "name": "dv_home_slide_project_title",
+      "type": "text",
+      "wrapper": {
+        "width": "33"
+      }
+    },
+    {
+      "key": "field_dv_home_slide_project_category",
+      "label": "Categoria do projeto",
+      "name": "dv_home_slide_project_category",
+      "type": "text",
+      "wrapper": {
+        "width": "34"
+      }
+    },
+    {
+      "key": "field_dv_home_slide_metric_value",
+      "label": "Métrica",
+      "name": "dv_home_slide_metric_value",
+      "type": "text",
+      "placeholder": "+68%",
+      "wrapper": {
+        "width": "33"
+      }
+    },
+    {
+      "key": "field_dv_home_slide_metric_label",
+      "label": "Legenda da métrica",
+      "name": "dv_home_slide_metric_label",
+      "type": "text",
+      "placeholder": "reconhecimento",
+      "wrapper": {
+        "width": "34"
+      }
+    },
+    {
+      "key": "field_dv_home_slide_duration",
+      "label": "Tempo deste slide",
+      "name": "dv_home_slide_duration",
+      "type": "number",
+      "instructions": "Em milissegundos. Vazio usa o tempo geral.",
+      "min": 2500,
+      "max": 20000,
+      "step": 100,
+      "append": "ms",
+      "wrapper": {
+        "width": "33"
+      }
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "home_slide"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": [
+    "the_content"
+  ],
+  "active": true,
+  "description": "Campos completos do Hero da Home, com imagens separadas para desktop e mobile.",
+  "show_in_rest": 1,
+  "modified": 1785100800
+}

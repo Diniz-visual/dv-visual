@@ -1,0 +1,26 @@
+{
+  "key": "group_diniz_article",
+  "title": "DV Visual — Artigo e guia",
+  "fields": [
+    {"key":"field_article_reading_time","label":"Tempo de leitura","name":"reading_time","type":"number","append":"min"},
+    {"key":"field_article_updated","label":"Exibir data de atualização","name":"show_updated_date","type":"true_false","default_value":1,"ui":1},
+    {"key":"field_article_summary","label":"Resumo / Principais pontos","name":"article_summary","type":"wysiwyg","toolbar":"basic","media_upload":0},
+    {"key":"field_article_toc","label":"Gerar sumário automático","name":"automatic_toc","type":"true_false","default_value":1,"ui":1},
+    {"key":"field_article_author_override","label":"Autor em destaque","name":"author_override","type":"user","role":["administrator","editor","author"],"return_format":"id"},
+    {"key":"field_article_faq","label":"FAQ do artigo","name":"article_faq","type":"repeater","layout":"row","button_label":"Adicionar pergunta","sub_fields":[
+      {"key":"field_article_question","label":"Pergunta","name":"question","type":"text"},
+      {"key":"field_article_answer","label":"Resposta","name":"answer","type":"textarea","rows":3}
+    ]},
+    {"key":"field_article_cta_title","label":"Título do CTA","name":"article_cta_title","type":"text"},
+    {"key":"field_article_cta_text","label":"Texto do CTA","name":"article_cta_text","type":"textarea","rows":2},
+    {"key":"field_article_cta_link","label":"Link do CTA","name":"article_cta_link","type":"link","return_format":"array"}
+  ],
+  "location": [[{"param":"post_type","operator":"==","value":"post"}],[{"param":"post_type","operator":"==","value":"guide"}],[{"param":"post_type","operator":"==","value":"help_article"}]],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "active": true,
+  "show_in_rest": 1,
+  "modified": 1784920004
+}

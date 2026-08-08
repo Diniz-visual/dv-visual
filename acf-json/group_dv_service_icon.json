@@ -1,0 +1,50 @@
+{
+  "key": "group_dv_service_icon",
+  "title": "Ícone da solução",
+  "fields": [
+    {
+      "key": "field_dv_service_icon",
+      "label": "Ícone da solução",
+      "name": "dv_service_icon",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "Este ícone aparece no lugar da numeração dos cards de Soluções. Prefira um arquivo quadrado, com fundo transparente.",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": 0,
+      "min_height": 0,
+      "min_size": 0,
+      "max_width": 0,
+      "max_height": 0,
+      "max_size": 2,
+      "mime_types": "png,webp,jpg,jpeg,svg",
+      "preview_size": "thumbnail"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "service"
+      }
+    ]
+  ],
+  "menu_order": 20,
+  "position": "side",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Ícone usado nos cards e listas do custom post Soluções.",
+  "show_in_rest": 1,
+  "modified": 1785192300
+}

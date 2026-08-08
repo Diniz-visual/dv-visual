@@ -1,0 +1,155 @@
+{
+  "key": "group_dv_portfolio",
+  "title": "DV Visual — Ficha do projeto",
+  "fields": [
+    {
+      "key":"field_dv_project_editor_guide",
+      "label":"Como montar a página do case",
+      "name":"",
+      "type":"message",
+      "message":"Use a Imagem destacada para a abertura. O texto principal vem do editor visual do WordPress, acima desta ficha. Complete abaixo os dados do cliente, os blocos do case, a galeria e o Scroll container para imagens ou PDFs.",
+      "new_lines":"wpautop",
+      "esc_html":0
+    },
+    {"key":"field_dv_project_client","label":"Cliente","name":"project_client","type":"text","required":0},
+    {"key":"field_dv_project_year","label":"Ano","name":"project_year","type":"number","required":0,"min":2000,"max":2100},
+    {"key":"field_dv_project_scope","label":"Escopo do projeto","name":"project_scope","type":"text","required":0,"instructions":"Ex.: Estratégia, identidade visual e website"},
+    {
+      "key":"field_dv_project_card_badge",
+      "label":"Selo do card",
+      "name":"project_card_badge",
+      "type":"text",
+      "required":0,
+      "instructions":"Texto pequeno exibido acima do título nos cards. Ex.: Projeto selecionado, Branding ou Case em destaque.",
+      "placeholder":"Projeto selecionado",
+      "maxlength":60
+    },
+    {
+      "key":"field_dv_project_card_description",
+      "label":"Descrição curta do card",
+      "name":"project_card_description",
+      "type":"text",
+      "required":0,
+      "instructions":"Resumo curto exibido abaixo do título. Se ficar vazio, o card usa o Escopo do projeto.",
+      "placeholder":"Estratégia, design e experiência digital",
+      "maxlength":140
+    },
+    {"key":"field_dv_project_challenge","label":"Desafio","name":"project_challenge","type":"wysiwyg","required":0,"tabs":"visual","toolbar":"basic","media_upload":0},
+    {"key":"field_dv_project_strategy","label":"Estratégia","name":"project_strategy","type":"wysiwyg","required":0,"tabs":"visual","toolbar":"basic","media_upload":0},
+    {"key":"field_dv_project_solution","label":"Solução criativa","name":"project_solution","type":"wysiwyg","required":0,"tabs":"visual","toolbar":"basic","media_upload":1},
+    {
+      "key":"field_dv_project_results",
+      "label":"Resultados",
+      "name":"project_results",
+      "type":"repeater",
+      "required":0,
+      "layout":"table",
+      "button_label":"Adicionar resultado",
+      "sub_fields":[
+        {"key":"field_dv_project_result_value","label":"Valor","name":"value","type":"text"},
+        {"key":"field_dv_project_result_label","label":"Descrição","name":"label","type":"text"}
+      ]
+    },
+    {
+      "key":"field_dv_project_palette",
+      "label":"Paleta do projeto",
+      "name":"project_palette",
+      "type":"repeater",
+      "required":0,
+      "layout":"table",
+      "button_label":"Adicionar cor",
+      "sub_fields":[
+        {"key":"field_dv_project_palette_color","label":"Cor","name":"color","type":"color_picker"},
+        {"key":"field_dv_project_palette_name","label":"Nome","name":"name","type":"text"}
+      ]
+    },
+    {"key":"field_dv_project_gallery_kicker","label":"Chamada pequena da galeria","name":"project_gallery_kicker","type":"text","required":0,"default_value":"Galeria do projeto"},
+    {"key":"field_dv_project_gallery_title","label":"Título da galeria","name":"project_gallery_title","type":"text","required":0,"default_value":"Continue sua jornada de descoberta."},
+    {"key":"field_dv_project_gallery_text","label":"Texto da galeria","name":"project_gallery_text","type":"textarea","required":0,"rows":2,"new_lines":"br"},
+    {"key":"field_dv_project_gallery_full","label":"Galeria do case","name":"project_gallery","type":"gallery","required":0,"instructions":"Adicione e reordene as imagens. A grade se adapta automaticamente ao computador, tablet e celular.","return_format":"array","preview_size":"medium","insert":"append"},
+    {
+      "key":"field_dv_project_scroll_tab",
+      "label":"Scroll container",
+      "type":"tab",
+      "placement":"top"
+    },
+    {
+      "key":"field_dv_project_scroll_kicker",
+      "label":"Chamada pequena",
+      "name":"project_scroll_kicker",
+      "type":"text",
+      "required":0,
+      "default_value":"Apresentação completa"
+    },
+    {
+      "key":"field_dv_project_scroll_title",
+      "label":"Título do Scroll container",
+      "name":"project_scroll_title",
+      "type":"text",
+      "required":0,
+      "default_value":"Explore o projeto em detalhes."
+    },
+    {
+      "key":"field_dv_project_scroll_text",
+      "label":"Texto de apoio",
+      "name":"project_scroll_text",
+      "type":"textarea",
+      "required":0,
+      "rows":2,
+      "new_lines":"br"
+    },
+    {
+      "key":"field_dv_project_scroll_items",
+      "label":"Arquivos do Scroll container",
+      "name":"project_scroll_items",
+      "type":"repeater",
+      "required":0,
+      "instructions":"Adicione imagens ou PDFs e reordene como desejar. Sem uma Galeria do case, este bloco ocupa o lugar dela; com galeria, aparece logo abaixo.",
+      "layout":"block",
+      "button_label":"Adicionar imagem ou PDF",
+      "collapsed":"field_dv_project_scroll_item_title",
+      "sub_fields":[
+        {
+          "key":"field_dv_project_scroll_item_media",
+          "label":"Imagem ou PDF",
+          "name":"media",
+          "type":"file",
+          "required":1,
+          "return_format":"array",
+          "library":"all",
+          "mime_types":"jpg,jpeg,png,gif,webp,avif,svg,pdf"
+        },
+        {
+          "key":"field_dv_project_scroll_item_title",
+          "label":"Título do arquivo",
+          "name":"title",
+          "type":"text",
+          "required":0
+        },
+        {
+          "key":"field_dv_project_scroll_item_caption",
+          "label":"Legenda",
+          "name":"caption",
+          "type":"textarea",
+          "required":0,
+          "rows":2,
+          "new_lines":"br"
+        }
+      ]
+    },
+    {"key":"field_dv_project_video","label":"Vídeo / Reel","name":"project_video","type":"oembed","required":0},
+    {"key":"field_dv_project_url","label":"Visitar projeto","name":"project_url","type":"url","required":0},
+    {"key":"field_dv_project_featured","label":"Projeto em destaque","name":"project_featured","type":"true_false","required":0,"ui":1}
+  ],
+  "location": [[{"param":"post_type","operator":"==","value":"portfolio"}]],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "Campos completos para a página editorial dos cases da DV Visual.",
+  "show_in_rest": 1,
+  "modified": 1785980400
+}

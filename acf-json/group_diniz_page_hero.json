@@ -1,0 +1,35 @@
+{
+  "key": "group_diniz_page_hero",
+  "title": "DV Visual — Hero e SEO",
+  "fields": [
+    {"key":"field_hero_enabled","label":"Exibir hero personalizado","name":"hero_enabled","type":"true_false","default_value":1,"ui":1},
+    {"key":"field_hero_style","label":"Estilo do hero","name":"hero_style","type":"button_group","choices":{"performance":"Performance","editorial":"Editorial","split":"Dividido","dark":"Escuro","minimal":"Minimalista"},"default_value":"performance"},
+    {"key":"field_hero_kicker","label":"Selo / Sobretítulo","name":"hero_kicker","type":"text","instructions":"Use uma categoria ou benefício curto, com até 5 palavras."},
+    {"key":"field_hero_title","label":"Título principal","name":"hero_title","type":"textarea","rows":2,"new_lines":"","instructions":"Escreva uma promessa clara e específica. Prefira entre 35 e 70 caracteres e apenas um H1 por página."},
+    {"key":"field_hero_highlight","label":"Trecho destacado","name":"hero_highlight","type":"text","instructions":"Trecho do título que receberá a cor de destaque."},
+    {"key":"field_hero_text","label":"Texto de apoio","name":"hero_text","type":"textarea","rows":3,"instructions":"Explique para quem é, o que entrega e qual benefício gera. Prefira até 160 caracteres."},
+    {"key":"field_hero_primary_cta","label":"Botão principal","name":"hero_primary_cta","type":"link","return_format":"array"},
+    {"key":"field_hero_secondary_cta","label":"Botão secundário","name":"hero_secondary_cta","type":"link","return_format":"array"},
+    {"key":"field_hero_image","label":"Imagem principal","name":"hero_image","type":"image","return_format":"id","preview_size":"large","library":"all"},
+    {"key":"field_hero_video","label":"Vídeo de fundo","name":"hero_video","type":"file","return_format":"id","mime_types":"mp4,webm"},
+    {"key":"field_hero_metrics","label":"Métricas","name":"hero_metrics","type":"repeater","layout":"table","max":4,"button_label":"Adicionar métrica","sub_fields":[
+      {"key":"field_metric_value","label":"Valor","name":"value","type":"text"},
+      {"key":"field_metric_label","label":"Legenda","name":"label","type":"text"},
+      {"key":"field_metric_trend","label":"Tendência","name":"trend","type":"text"}
+    ]},
+    {"key":"field_seo_tab","label":"SEO e compartilhamento","type":"tab"},
+    {"key":"field_seo_title","label":"Título SEO","name":"seo_title","type":"text","maxlength":60,"instructions":"Use a intenção principal no início e mantenha entre 50 e 60 caracteres."},
+    {"key":"field_seo_description","label":"Meta description","name":"seo_description","type":"textarea","rows":3,"maxlength":160,"instructions":"Resuma valor e contexto em linguagem natural, com chamada implícita. Prefira entre 140 e 156 caracteres."},
+    {"key":"field_seo_keyword","label":"Palavra-chave principal","name":"seo_keyword","type":"text","instructions":"Escolha uma única intenção de busca. Use variações no texto sem repetir artificialmente."},
+    {"key":"field_og_image","label":"Imagem social","name":"og_image","type":"image","return_format":"id","preview_size":"medium","library":"all"},
+    {"key":"field_schema_type","label":"Tipo de Schema","name":"schema_type","type":"select","choices":{"WebPage":"Página","Service":"Serviço","Article":"Artigo","Product":"Produto","FAQPage":"FAQ","ContactPage":"Contato"},"default_value":"WebPage"}
+  ],
+  "location": [[{"param":"post_type","operator":"==","value":"page"}],[{"param":"post_type","operator":"==","value":"post"}],[{"param":"post_type","operator":"==","value":"portfolio"}],[{"param":"post_type","operator":"==","value":"service"}],[{"param":"post_type","operator":"==","value":"product"}],[{"param":"post_type","operator":"==","value":"guide"}]],
+  "menu_order": 0,
+  "position": "acf_after_title",
+  "style": "seamless",
+  "label_placement": "top",
+  "active": true,
+  "show_in_rest": 1,
+  "modified": 1784920001
+}

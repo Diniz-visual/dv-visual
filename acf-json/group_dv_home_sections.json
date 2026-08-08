@@ -1,0 +1,91 @@
+{
+  "key": "group_dv_home_sections",
+  "title": "DV Visual — Configuração da seção da Home",
+  "fields": [
+    {
+      "key": "field_dv_home_section_enabled",
+      "label": "Exibir na Home",
+      "name": "dv_home_section_enabled",
+      "type": "true_false",
+      "instructions": "Desative para ocultar a seção sem apagar seu conteúdo.",
+      "default_value": 1,
+      "ui": 1,
+      "ui_on_text": "Visível",
+      "ui_off_text": "Oculta"
+    },
+    {
+      "key": "field_dv_home_section_key",
+      "label": "Tipo da seção",
+      "name": "dv_home_section_key",
+      "type": "select",
+      "instructions": "Escolhe o template e a fonte dinâmica usados por esta seção.",
+      "required": 1,
+      "choices": {
+        "hero": "Hero principal / Slides",
+        "client-trust": "Marcas que confiam",
+        "problems": "O que fazemos / Soluções",
+        "solution-ecosystem": "Ecossistema de soluções",
+        "manifesto": "Manifesto",
+        "portfolio-showcase": "Projetos em destaque",
+        "content-hub": "Produtos, ferramentas e guias",
+        "softwares": "Softwares utilizados",
+        "process": "Processo de trabalho",
+        "testimonials": "Depoimentos",
+        "faq": "Perguntas frequentes",
+        "posts-grid": "Conteúdos do blog",
+        "cta": "Chamada final",
+        "custom": "Seção personalizada"
+      },
+      "default_value": "custom",
+      "allow_null": 0,
+      "multiple": 0,
+      "ui": 1,
+      "ajax": 0,
+      "return_format": "value"
+    },
+    {
+      "key": "field_dv_home_section_order_help",
+      "label": "Como alterar a ordem",
+      "name": "",
+      "type": "message",
+      "message": "Em Home — Construtor, arraste o card para “Blocos ativos” para exibir na Home ou para “Todos os blocos” para ocultar sem apagar. A ordem e a visibilidade são salvas automaticamente.",
+      "new_lines": "wpautop",
+      "esc_html": 0
+    },
+    {
+      "key": "field_dv_home_section_anchor",
+      "label": "Âncora da seção",
+      "name": "dv_home_section_anchor",
+      "type": "text",
+      "instructions": "Identificador opcional para links como /#portfolio. Use letras, números e hífens, sem espaços.",
+      "placeholder": "portfolio"
+    },
+    {
+      "key": "field_dv_home_section_classes",
+      "label": "Classes CSS extras",
+      "name": "dv_home_section_classes",
+      "type": "text",
+      "instructions": "Opcional e avançado. Separe várias classes com espaços.",
+      "placeholder": "minha-secao destaque"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "post_type",
+        "operator": "==",
+        "value": "home_section"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "acf_after_title",
+  "style": "seamless",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": [],
+  "active": true,
+  "description": "Controla exibição, tipo, ordem visual, âncora e classes de cada seção da página inicial.",
+  "show_in_rest": 1,
+  "modified": 1785100800
+}

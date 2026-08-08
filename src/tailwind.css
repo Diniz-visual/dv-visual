@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@source "../../**/*.php";
+@source "../../**/*.html";
+
+@theme {
+  --color-ink: #0a2540;
+  --color-paper: #eefaf9;
+  --color-accent: #14b8b5;
+  --color-teal: #0e8f8c;
+  --color-aqua: #6fe0da;
+  --font-display: "Manrope", sans-serif;
+  --font-body: "Manrope", sans-serif;
+}
