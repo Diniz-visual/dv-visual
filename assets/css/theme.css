@@ -215,6 +215,14 @@ html body > .wp-site-blocks { padding-block:0!important; }
 .dv-site-brand { flex:0 0 auto;gap:.72rem!important;min-width:max-content; }
 .dv-site-brand .wp-block-site-logo { line-height:0; }
 .dv-site-brand .wp-block-site-logo a { display:block;border-radius:0;line-height:0; }
+.dv-site-brand .dv-header-logo-link { display:grid;align-items:center;justify-items:start; }
+.dv-site-brand .dv-header-logo-link>.dv-header-logo,
+.dv-site-brand .dv-header-logo-secondary { grid-area:1/1; }
+.dv-site-brand .dv-header-logo-secondary { display:block;line-height:0;pointer-events:none; }
+.dv-site-brand .dv-header-logo { transition:opacity .28s ease,transform .36s cubic-bezier(.2,.7,.2,1); }
+.dv-site-brand .dv-header-logo--secondary { opacity:0;transform:translateY(5px); }
+.home .dv-header--transparent.dv-header--has-logo-swap:not(.dv-header-scrolled) .dv-header-logo--primary { opacity:0;transform:translateY(-5px); }
+.home .dv-header--transparent.dv-header--has-logo-swap:not(.dv-header-scrolled) .dv-header-logo--secondary { opacity:1;transform:none; }
 .dv-site-brand .wp-block-site-logo img,
 .dv-site-brand .custom-logo,
 .dv-site-brand .dv-managed-logo {
@@ -253,6 +261,9 @@ html body > .wp-site-blocks { padding-block:0!important; }
   box-shadow:0 16px 40px rgba(20,184,181,.34),inset 0 1px 0 rgba(255,255,255,.42);
 }
 .dv-header--global { width:100%; }
+@media (prefers-reduced-motion:reduce) {
+  .dv-site-brand .dv-header-logo { transition:none; }
+}
 .dv-main-menu .wp-block-navigation-item__content { position:relative;font-size:.8rem;font-weight:700;letter-spacing:-.01em; }
 .dv-main-menu>.wp-block-navigation__responsive-container:not(.dv-offcanvas)>.wp-block-navigation__responsive-close>.wp-block-navigation__responsive-dialog>.wp-block-navigation__responsive-container-content>.wp-block-navigation__container>.wp-block-navigation-item>.wp-block-navigation-item__content::after {
   content:"";
@@ -925,6 +936,27 @@ a.dv-software-card:focus-visible { outline:3px solid rgba(20,184,181,.28);outlin
 .dv-testimonials .swiper-pagination { position:relative; }
 .dv-testimonials .swiper-pagination-bullet { background:#fff; }
 .dv-testimonial-controls { justify-content:center;margin-top:2rem;color:#fff; }
+.dv-faq-section { padding:var(--dv-section-y) 0;background:var(--dv-paper); }
+.dv-faq-section__shell { display:grid;grid-template-columns:minmax(260px,.72fr) minmax(0,1.28fr);gap:clamp(2.5rem,7vw,7rem);width:min(1280px,calc(100% - var(--dv-shell-gap)));margin-inline:auto; }
+.dv-faq-section__intro { align-self:start; }
+.dv-faq-section__intro h2 { max-width:12ch;margin:.55rem 0 1rem;color:var(--dv-ink);font-size:var(--dv-type-h2);line-height:1;letter-spacing:-.055em;text-wrap:balance; }
+.dv-faq-section__intro>p:last-child { max-width:38ch;margin:0;color:var(--dv-muted);font-size:clamp(.96rem,.25vw + .9rem,1.08rem);line-height:1.7; }
+.dv-faq-section__items { border-top:1px solid var(--dv-line); }
+.dv-faq-item.wp-block-details { margin:0;padding:0;border:0!important;border-bottom:1px solid var(--dv-line)!important;border-radius:0;background:transparent!important; }
+.dv-faq-item summary { display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.4rem 0;color:var(--dv-ink);font-size:clamp(1rem,.35vw + .92rem,1.18rem);font-weight:800;list-style:none; }
+.dv-faq-item summary::-webkit-details-marker { display:none; }
+.dv-faq-item summary span { position:relative;flex:0 0 auto;width:30px;height:30px;border:1px solid rgba(20,184,181,.28);border-radius:50%; }
+.dv-faq-item summary span::before,.dv-faq-item summary span::after { content:"";position:absolute;top:50%;left:50%;width:11px;height:1.5px;border-radius:2px;background:var(--dv-teal);transform:translate(-50%,-50%);transition:transform .22s ease; }
+.dv-faq-item summary span::after { transform:translate(-50%,-50%) rotate(90deg); }
+.dv-faq-item[open] summary span::after { transform:translate(-50%,-50%) rotate(0); }
+.dv-faq-item__answer { max-width:760px;padding:0 3rem 1.45rem 0;color:var(--dv-muted);line-height:1.75; }
+.dv-faq-item__answer>:last-child { margin-bottom:0; }
+@media (max-width:780px) {
+  .dv-faq-section__shell { grid-template-columns:1fr;gap:2rem; }
+  .dv-faq-section__intro h2 { max-width:14ch; }
+  .dv-faq-item summary { padding:1.15rem 0; }
+  .dv-faq-item__answer { padding-right:0; }
+}
 .wp-block-details { margin-bottom:.8rem;background:rgba(255,255,255,.58);transition:border-color .25s ease,background-color .25s ease; }
 .wp-block-details[open] { border-color:rgba(20,184,181,.45)!important;background:#fff; }
 .wp-block-details summary { cursor:pointer;font-weight:750; }
@@ -2967,157 +2999,4 @@ a.dv-software-card:focus-visible { outline:3px solid rgba(20,184,181,.28);outlin
   .dv-blog-share__status { text-align:left; }
   .dv-breadcrumbs--glass,.dv-breadcrumbs--solid { width:100%;border-radius:18px; }
   .dv-breadcrumbs a,.dv-breadcrumbs [aria-current="page"] { max-width:min(32ch,64vw); }
-}
-
-/* ==============================================================
-   FAQ — accordion editorial
-   Inspirado em listas amplas e minimalistas, usando a paleta DV Visual.
-   ============================================================== */
-.dv-faq-section {
-  position:relative;
-  overflow:hidden;
-  padding:var(--dv-section-y) 0;
-  background:linear-gradient(180deg,#fff 0%,var(--dv-paper) 100%)!important;
-}
-
-.dv-faq-section>.alignwide {
-  display:block;
-  width:min(1180px,calc(100% - var(--dv-shell-gap)));
-  max-width:1180px;
-  margin-inline:auto;
-}
-
-.dv-faq-section>.alignwide>.wp-block-column:first-child {
-  max-width:760px;
-  margin-bottom:clamp(2rem,4vw,3.5rem);
-}
-
-.dv-faq-section>.alignwide>.wp-block-column:first-child h2 {
-  margin:.5rem 0 .8rem;
-  color:var(--dv-ink);
-  font-size:var(--dv-type-h2);
-  line-height:1;
-  letter-spacing:-.055em;
-}
-
-.dv-faq-section>.alignwide>.wp-block-column:first-child>p:not(.dv-kicker) {
-  max-width:620px;
-  margin:0;
-  color:var(--dv-muted);
-}
-
-.dv-faq-list {
-  display:flex;
-  width:100%;
-  flex-direction:column;
-  gap:12px;
-}
-
-.dv-faq-list .dv-faq-item.wp-block-details {
-  width:100%;
-  margin:0;
-  overflow:hidden;
-  border:1px solid rgba(10,37,64,.12)!important;
-  border-radius:10px;
-  background:rgba(238,249,248,.78);
-  box-shadow:none;
-  transition:border-color .25s ease,background-color .25s ease,box-shadow .25s ease,transform .25s ease;
-
-}
-
-.dv-faq-list .dv-faq-item.wp-block-details:hover {
-  border-color:rgba(14,143,140,.36)!important;
-  background:#fff;
-}
-
-.dv-faq-list .dv-faq-item.wp-block-details[open] {
-  border-color:rgba(14,143,140,.46)!important;
-  background:#fff;
-  box-shadow:0 14px 38px rgba(10,37,64,.06);
-}
-
-.dv-faq-list .dv-faq-item>summary {
-  position:relative;
-  display:flex;
-  min-height:74px;
-  align-items:center;
-  justify-content:space-between;
-  gap:1.5rem;
-  padding:1.35rem 4.5rem 1.35rem 1.5rem;
-  color:var(--dv-ink);
-  font-family:var(--dv-font-sans);
-  font-size:clamp(.98rem,.3vw + .92rem,1.1rem);
-  font-weight:800;
-  line-height:1.35;
-  list-style:none;
-  cursor:pointer;
-  user-select:none;
-  border-radius: 8px;
- 
-}
-
-.dv-faq-list .dv-faq-item>summary::-webkit-details-marker { display:none; }
-.dv-faq-list .dv-faq-item>summary::marker { content:""; }
-
-.dv-faq-list .dv-faq-item>summary::after {
-  content:"";
-  position:absolute;
-  top:50%;
-  right:1.65rem;
-  width:9px;
-  height:9px;
-  border-right:2px solid var(--dv-accent);
-  border-bottom:2px solid var(--dv-accent);
-  transform:translateY(-65%) rotate(45deg);
-  transform-origin:center;
-  transition:transform .25s ease,border-color .25s ease;
-}
-
-.dv-faq-list .dv-faq-item[open]>summary::after {
-  border-color:var(--dv-teal);
-  transform:translateY(-30%) rotate(225deg);
-}
-
-.dv-faq-list .dv-faq-item>summary:focus-visible {
-  outline:3px solid rgba(20,184,181,.25);
-  outline-offset:-3px;
-}
-
-.dv-faq-answer {
-  padding:0 4.5rem 1.55rem 1.5rem;
-  color:#1d1d1d;
-  font-size:clamp(.94rem,.15vw + .91rem,1rem);
-  line-height:1.72;
-  
-}
-
-.dv-faq-answer>*:first-child { margin-top:0; }
-.dv-faq-answer>*:last-child { margin-bottom:0; }
-.dv-faq-answer a { color:var(--dv-teal);font-weight:700; }
-
-@media (max-width:700px) {
-  .dv-faq-section>.alignwide {
-    width:min(100% - 32px,1180px);
-  }
-
-  .dv-faq-list {
-    gap:10px;
-    border-radius: 8px;
-  }
-
-  .dv-faq-list .dv-faq-item>summary {
-    min-height:68px;
-    padding:1.15rem 3.5rem 1.15rem 1.1rem;
-    font-size:.96rem;
-  }
-
-  .dv-faq-list .dv-faq-item>summary::after {
-    right:1.25rem;
-  }
-
-  .dv-faq-answer {
-    padding:0 3.5rem 1.25rem 1.1rem;
-    font-size:.92rem;
-
-  }
 }

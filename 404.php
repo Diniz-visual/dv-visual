@@ -41,9 +41,9 @@ $useful_links  = array(
 		<div class="dv-error-shell">
 			<div class="dv-error-copy">
 				<?php echo diniz_studio_breadcrumbs(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<p class="dv-kicker dv-kicker-dark"><?php echo esc_html( diniz_studio_global_text( 'dv_404_kicker', 'Rota não encontrada' ) ); ?></p>
+				<p class="dv-kicker dv-kicker-dark"><?php esc_html_e( 'Rota não encontrada', 'dv-visual' ); ?></p>
 				<p class="dv-error-code"><?php esc_html_e( 'Erro // 404', 'dv-visual' ); ?></p>
-				<h1><?php echo esc_html( diniz_studio_global_text( 'dv_404_title', 'Essa página se perdeu pelo caminho.' ) ); ?></h1>
+				<h1><?php esc_html_e( 'Essa página se perdeu pelo caminho.', 'dv-visual' ); ?></h1>
 				<p class="dv-error-lead"><?php esc_html_e( 'O endereço pode ter mudado ou nunca ter existido. Vamos encontrar uma nova direção para você.', 'dv-visual' ); ?></p>
 
 				<div class="dv-error-search">
@@ -82,7 +82,7 @@ $useful_links  = array(
 				</div>
 				<div class="dv-error-note dv-error-note--top">
 					<small><?php esc_html_e( 'Coordenadas', 'dv-visual' ); ?></small>
-					<strong><?php echo esc_html( diniz_studio_global_text( 'dv_404_kicker', 'Rota não encontrada' ) ); ?></strong>
+					<strong><?php esc_html_e( 'Rota não encontrada', 'dv-visual' ); ?></strong>
 				</div>
 				<div class="dv-error-note dv-error-note--bottom">
 					<small><?php esc_html_e( 'Status', 'dv-visual' ); ?></small>

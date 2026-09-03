@@ -820,7 +820,7 @@ add_action( 'manage_home_slide_posts_custom_column', 'diniz_studio_home_admin_co
  */
 function diniz_studio_home_editor_guidance( $post ) {
 	if ( 'home_section' === $post->post_type ) {
-		echo '<div class="notice notice-info inline"><p><strong>Como editar:</strong> altere e arraste os blocos abaixo. Para reorganizar seções inteiras, use <a href="' . esc_url( admin_url( 'admin.php?page=dv-home-builder' ) ) . '"><strong>Home — Construtor</strong></a>. Os cards de Clientes, Soluções, Portfólio, Depoimentos e Perguntas Frequentes continuam vindo dos respectivos menus.</p></div>';
+		echo '<div class="notice notice-info inline"><p><strong>Como editar:</strong> altere e arraste os blocos abaixo. Para reorganizar seções inteiras, use <a href="' . esc_url( admin_url( 'admin.php?page=dv-home-builder' ) ) . '"><strong>Home — Construtor</strong></a>. Os cards de Clientes, Soluções, Portfólio e Depoimentos continuam vindo dos respectivos menus.</p></div>';
 	}
 
 	if ( 'home_slide' === $post->post_type ) {

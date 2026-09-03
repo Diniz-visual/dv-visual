@@ -2,7 +2,7 @@
 
 Tema WordPress híbrido/clássico completo para WordPress 6.5 ou superior, criado para o portfólio da DV Visual.
 
-A versão 4.26.0 remodela a página individual do Blog com abertura editorial, breadcrumb, categoria, título, resumo, autor, data, tempo de leitura, imagem destacada ampla, compartilhamento, resposta rápida, sumário automático, categorias laterais, navegação entre artigos, comentários e CTA. Os breadcrumbs agora atendem Blog, páginas, arquivos, buscas, categorias, Custom Post Types e 404, com controles globais em **DV Visual → Breadcrumbs** para visibilidade, rótulos, separador, página atual, estilo e cores. A versão preserva o Scroll container de imagens/PDFs dos cases, a sidebar administrativa reativa, a tipografia Manrope, os filtros, o carregamento AJAX, os carrosséis Swiper, o Bootstrap Offcanvas, o SEO de fallback e as logos transparentes.
+A versão 4.27.0 transforma Perguntas frequentes em um Custom Post Type completo: o título do post é a pergunta, o editor WordPress guarda a resposta, a ordem é controlada em Atributos da página e a seção da Home é atualizada automaticamente com Schema FAQPage. O menu administrativo acompanha o estado ativo/inativo do bloco sem recarregar. No cabeçalho, a **Logo secundária — menu transparente** aparece no topo da Home e volta para a Logo principal após a rolagem, com transição acessível e suporte a SVG, PNG e WebP. A versão preserva o Blog editorial, os breadcrumbs globais, o Scroll container dos cases, os carrosséis Swiper, o Bootstrap Offcanvas, o SEO de fallback e a responsividade completa.
 
 ## Instalação
 
@@ -120,33 +120,3 @@ Todos os arquivos em `template-parts/home/` possuem comentários indicando exata
 ## Desenvolvimento com Tailwind
 
 Execute `npm install` e depois `npm run watch:css` dentro da pasta do tema.
-
-## v4.27.0 — Conteúdo e SEO editáveis
-- Todas as páginas passam a exibir o painel **DV Visual — Textos e títulos da página**, com kicker, texto de apoio e até 6 conjuntos de título/sobretítulo/texto para seções fixas do template.
-- **DV Visual → Textos do site** centraliza títulos globais do Processo, FAQ, CTA, Blog, Portfólio da Home, Rodapé e página 404.
-- O grupo existente **DV Visual — Hero e SEO** passa a ficar disponível em todos os tipos de conteúdo públicos.
-- Sem Yoast, Rank Math, AIOSEO ou SEOPress, o tema usa os campos de SEO para document title, meta description, canonical, Open Graph, Twitter Card e Schema JSON-LD.
-- Com um plugin SEO dedicado ativo, o tema evita duplicar as metatags principais.
-
-## Atualizações via GitHub
-
-A partir da versão 4.28.0, o tema pode receber atualizações pelo atualizador nativo do WordPress usando **GitHub Releases**.
-
-1. No WordPress, acesse **DV Visual → Atualizações GitHub** (ou **Aparência → Atualizações GitHub**, dependendo da instalação).
-2. Informe o usuário/organização do GitHub e o nome do repositório.
-3. Para repositórios privados, informe um fine-grained Personal Access Token com permissão de leitura em **Contents** para esse repositório.
-4. Para publicar uma versão, altere a versão em `style.css` e `DINIZ_STUDIO_VERSION` em `functions.php`, faça push e crie uma GitHub Release/tag, por exemplo `v4.29.0`.
-5. O WordPress passa a mostrar a nova versão em **Painel → Atualizações** e **Aparência → Temas**.
-
-O pacote ZIP padrão gerado pelo GitHub é normalizado automaticamente pelo updater para manter a pasta estável `dv-visual` e evitar temas duplicados.
-
-
-### Repositório oficial e autenticação privada (4.28.2+)
-
-O updater é fixado em `Diniz-visual/dv-visual`. Para repositório privado, NÃO coloque o PAT no código do tema nem faça commit dele. Defina o token no `wp-config.php`, antes da linha “That's all, stop editing”: 
-
-```php
-define( 'DV_VISUAL_GITHUB_TOKEN', 'github_pat_SEU_NOVO_TOKEN' );
-```
-
-Use um Fine-grained PAT com acesso somente ao repositório `dv-visual` e `Contents: Read-only`.

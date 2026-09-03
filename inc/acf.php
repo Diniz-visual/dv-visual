@@ -66,6 +66,34 @@ function diniz_studio_acf_options() {
 add_action( 'acf/init', 'diniz_studio_acf_options' );
 
 /**
+ * Keep the logo purpose explicit even when WordPress still has an older ACF
+ * database copy of the global settings group.
+ *
+ * @param array<string,mixed> $field ACF field definition.
+ * @return array<string,mixed>
+ */
+function diniz_studio_prepare_primary_logo_field( $field ) {
+	$field['label']        = __( 'Logo principal', 'dv-visual' );
+	$field['instructions'] = __( 'Exibida no cabeçalho normal e depois da rolagem. Envie SVG, PNG ou WebP sem fundo.', 'dv-visual' );
+	return $field;
+}
+add_filter( 'acf/prepare_field/key=field_brand_logo_dark', 'diniz_studio_prepare_primary_logo_field' );
+
+/**
+ * Label the existing light-logo value as the transparent-header secondary
+ * logo without changing its field name or losing previously uploaded media.
+ *
+ * @param array<string,mixed> $field ACF field definition.
+ * @return array<string,mixed>
+ */
+function diniz_studio_prepare_secondary_logo_field( $field ) {
+	$field['label']        = __( 'Logo secundária — menu transparente', 'dv-visual' );
+	$field['instructions'] = __( 'Exibida enquanto o cabeçalho transparente estiver sobre o topo da Home. Prefira uma versão clara em SVG, PNG ou WebP sem fundo.', 'dv-visual' );
+	return $field;
+}
+add_filter( 'acf/prepare_field/key=field_brand_logo_light', 'diniz_studio_prepare_secondary_logo_field' );
+
+/**
  * Keep the global breadcrumb controls available immediately.
  *
  * Local JSON remains the source for new installations. Registering each field

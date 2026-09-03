@@ -9,15 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'DINIZ_STUDIO_VERSION', '4.28.5' );
+define( 'DINIZ_STUDIO_VERSION', '4.27.0' );
 
 require_once get_template_directory() . '/inc/acf.php';
-require_once get_template_directory() . '/inc/editable-content.php';
 require_once get_template_directory() . '/inc/post-types.php';
 require_once get_template_directory() . '/inc/permalinks.php';
 require_once get_template_directory() . '/inc/render.php';
 require_once get_template_directory() . '/inc/home-manager.php';
-require_once get_template_directory() . '/inc/github-updater.php';
 
 function diniz_studio_setup() {
 	load_theme_textdomain( 'dv-visual', get_template_directory() . '/languages' );

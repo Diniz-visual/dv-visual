@@ -4,8 +4,8 @@
   "fields": [
     {"key":"field_brand_tab","label":"Marca","type":"tab"},
     {"key":"field_brand_name","label":"Nome da marca","name":"brand_name","type":"text","default_value":"Diniz Visual"},
-    {"key":"field_brand_logo_dark","label":"Logo principal","name":"brand_logo_dark","type":"image","instructions":"Usada como alternativa principal. Envie SVG, PNG ou WebP sem fundo.","return_format":"id","preview_size":"medium","library":"all","mime_types":"svg,png,webp","max_size":2},
-    {"key":"field_brand_logo_light","label":"Logo para fundo escuro","name":"brand_logo_light","type":"image","instructions":"Usada no cabeçalho de vidro, menu mobile e rodapé. Prefira SVG branco ou claro, sempre sem fundo.","return_format":"id","preview_size":"medium","library":"all","mime_types":"svg,png,webp","max_size":2},
+    {"key":"field_brand_logo_dark","label":"Logo principal","name":"brand_logo_dark","type":"image","instructions":"Exibida no cabeçalho normal e depois da rolagem. Envie SVG, PNG ou WebP sem fundo.","return_format":"id","preview_size":"medium","library":"all","mime_types":"svg,png,webp","max_size":2},
+    {"key":"field_brand_logo_light","label":"Logo secundária — menu transparente","name":"brand_logo_light","type":"image","instructions":"Exibida enquanto o cabeçalho transparente estiver sobre o topo da Home. Prefira uma versão clara em SVG, PNG ou WebP sem fundo.","return_format":"id","preview_size":"medium","library":"all","mime_types":"svg,png,webp","max_size":2},
     {"key":"field_brand_favicon","label":"Ícone da marca","name":"brand_favicon","type":"image","instructions":"Ícone quadrado em SVG, PNG ou WebP.","return_format":"id","preview_size":"thumbnail","library":"all","mime_types":"svg,png,webp","max_size":1},
     {"key":"field_header_tab","label":"Cabeçalho","type":"tab"},
     {"key":"field_header_cta_label","label":"Texto do botão","name":"header_cta_label","type":"text","default_value":"Orçamento"},

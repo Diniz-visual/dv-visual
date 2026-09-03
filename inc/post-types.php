@@ -79,6 +79,15 @@ function diniz_studio_content_type_config() {
 			'description' => 'Respostas objetivas, orientações e documentação para encontrar informações e aproveitar melhor cada entrega.',
 			'cta'         => 'Ver resposta',
 		),
+		'faq' => array(
+			'name'        => 'Perguntas frequentes',
+			'singular'    => 'Pergunta frequente',
+			'icon'        => 'dashicons-editor-help',
+			'rewrite'     => 'pergunta-frequente',
+			'kicker'      => 'Dúvidas frequentes',
+			'description' => 'Respostas objetivas para as perguntas mais comuns antes, durante e depois de um projeto.',
+			'cta'         => 'Ver resposta',
+		),
 		'job' => array(
 			'name'        => 'Vagas',
 			'singular'    => 'Vaga',
@@ -165,35 +174,6 @@ function diniz_studio_register_content_types() {
 		) );
 	}
 
-	register_post_type( 'faq', array(
-		'labels' => array(
-			'name'               => 'Perguntas Frequentes',
-			'singular_name'      => 'Pergunta frequente',
-			'menu_name'          => 'Perguntas Frequentes',
-			'add_new'            => 'Adicionar pergunta',
-			'add_new_item'       => 'Adicionar pergunta frequente',
-			'edit_item'          => 'Editar pergunta',
-			'new_item'           => 'Nova pergunta',
-			'view_item'          => 'Ver pergunta',
-			'search_items'       => 'Buscar perguntas',
-			'not_found'          => 'Nenhuma pergunta encontrada.',
-			'not_found_in_trash' => 'Nenhuma pergunta encontrada na lixeira.',
-			'all_items'          => 'Todas as perguntas',
-		),
-		'public'              => false,
-		'publicly_queryable'  => false,
-		'exclude_from_search' => true,
-		'show_ui'             => true,
-		'show_in_menu'        => true,
-		'show_in_admin_bar'   => true,
-		'show_in_rest'        => true,
-		'show_in_nav_menus'   => false,
-		'has_archive'         => false,
-		'menu_icon'           => 'dashicons-editor-help',
-		'menu_position'       => 20,
-		'supports'            => array( 'title', 'editor', 'revisions', 'custom-fields', 'page-attributes' ),
-	) );
-
 	register_taxonomy( 'solution_category', array( 'portfolio', 'product', 'service', 'tool' ), array(
 		'labels'       => array( 'name' => 'Categorias de solução', 'singular_name' => 'Categoria de solução' ),
 		'public'       => true,
@@ -237,16 +217,12 @@ function diniz_studio_register_content_types() {
 add_action( 'init', 'diniz_studio_register_content_types' );
 
 /**
- * Seed the original FAQ content into the FAQ Custom Post Type once.
- * Existing FAQ content is never overwritten.
+ * Create a useful starter FAQ once. Each question remains a normal WordPress
+ * post that can be reordered, unpublished, duplicated or deleted.
  *
  * @return void
  */
-function diniz_studio_maybe_seed_faq_content() {
-	if ( get_option( 'diniz_studio_faq_seeded' ) ) {
-		return;
-	}
-
+function diniz_studio_seed_faq_content() {
 	$existing = get_posts(
 		array(
 			'post_type'      => 'faq',
@@ -256,42 +232,49 @@ function diniz_studio_maybe_seed_faq_content() {
 		)
 	);
 
-	if ( ! $existing ) {
-		$items = array(
-			array(
-				'question' => 'Quanto tempo até começar a ver resultados?',
-				'answer'   => 'O prazo varia por estratégia. Sites podem gerar impacto imediato; SEO amadurece progressivamente.',
-			),
-			array(
-				'question' => 'Os serviços podem ser contratados separadamente?',
-				'answer'   => 'Sim. O plano pode começar por uma necessidade específica e evoluir de forma integrada.',
-			),
-			array(
-				'question' => 'Vocês atendem qualquer segmento?',
-				'answer'   => 'O diagnóstico inicial confirma aderência, metas e o melhor formato de trabalho.',
-			),
-			array(
-				'question' => 'Como o desempenho é acompanhado?',
-				'answer'   => 'Por indicadores definidos com você e relatórios claros, conectados aos objetivos comerciais.',
-			),
-		);
+	if ( $existing ) {
+		return;
+	}
 
-		foreach ( $items as $order => $item ) {
-			wp_insert_post(
+	$questions = array(
+		'Quanto tempo até começar a ver resultados?' => 'O prazo varia conforme a estratégia. Sites podem gerar impacto imediato, enquanto SEO e posicionamento amadurecem progressivamente.',
+		'Os serviços podem ser contratados separadamente?' => 'Sim. O projeto pode começar por uma necessidade específica e evoluir de forma integrada conforme a prioridade da marca.',
+		'Vocês atendem qualquer segmento?' => 'O diagnóstico inicial confirma a aderência, os objetivos e o formato de trabalho mais indicado para cada negócio.',
+		'Como o desempenho é acompanhado?' => 'Definimos indicadores junto com você e apresentamos o avanço de forma clara, sempre conectado aos objetivos do projeto.',
+	);
+
+	$order = 0;
+	foreach ( $questions as $question => $answer ) {
+		wp_insert_post(
+			wp_slash(
 				array(
 					'post_type'    => 'faq',
 					'post_status'  => 'publish',
-					'post_title'   => $item['question'],
-					'post_content' => $item['answer'],
+					'post_title'   => $question,
+					'post_content' => $answer,
 					'menu_order'   => $order,
 				)
-			);
-		}
+			)
+		);
+		$order++;
+	}
+}
+
+/**
+ * Seed and activate FAQ permalinks once on updated installations.
+ *
+ * @return void
+ */
+function diniz_studio_maybe_seed_faq_content() {
+	if ( '1.0.0' === get_option( 'diniz_studio_faq_content_version' ) ) {
+		return;
 	}
 
-	update_option( 'diniz_studio_faq_seeded', 1, false );
+	diniz_studio_seed_faq_content();
+	flush_rewrite_rules( false );
+	update_option( 'diniz_studio_faq_content_version', '1.0.0', false );
 }
-add_action( 'admin_init', 'diniz_studio_maybe_seed_faq_content', 20 );
+add_action( 'admin_init', 'diniz_studio_maybe_seed_faq_content', 18 );
 
 /**
  * Keep the Solução icon field directly below the featured image in the

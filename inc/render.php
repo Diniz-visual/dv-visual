@@ -965,6 +965,87 @@ function diniz_studio_menu_markup( $location, $menu_class, $menu_id ) {
 }
 
 /**
+ * Render the FAQ Custom Post Type as a responsive accordion.
+ *
+ * The post title is the question, the WordPress editor is the answer and Page
+ * Attributes > Order controls the sequence. The same renderer feeds the Home,
+ * reusable FAQ pattern and [dv_faq] shortcode.
+ *
+ * @param array<string,mixed> $attributes Optional labels and item limit.
+ * @return string
+ */
+function diniz_studio_faq_block( $attributes = array() ) {
+	static $instance = 0;
+	$instance++;
+	$title_id = 'dv-faq-title-' . $instance;
+
+	$attributes = shortcode_atts(
+		array(
+			'kicker' => __( 'Dúvidas frequentes', 'dv-visual' ),
+			'title'  => __( 'Antes de começar.', 'dv-visual' ),
+			'text'   => __( 'Respostas objetivas para as perguntas mais comuns.', 'dv-visual' ),
+			'limit'  => -1,
+		),
+		(array) $attributes,
+		'dv_faq'
+	);
+
+	$query = new WP_Query(
+		array(
+			'post_type'      => 'faq',
+			'post_status'    => 'publish',
+			'posts_per_page' => (int) $attributes['limit'],
+			'orderby'        => array( 'menu_order' => 'ASC', 'date' => 'ASC' ),
+			'order'          => 'ASC',
+			'no_found_rows'  => true,
+		)
+	);
+
+	$schema_items = array();
+	foreach ( $query->posts as $faq_post ) {
+		$plain_answer = trim( wp_strip_all_tags( strip_shortcodes( $faq_post->post_content ) ) );
+		if ( $plain_answer ) {
+			$schema_items[] = array(
+				'@type'          => 'Question',
+				'name'           => wp_strip_all_tags( get_the_title( $faq_post ) ),
+				'acceptedAnswer' => array( '@type' => 'Answer', 'text' => $plain_answer ),
+			);
+		}
+	}
+
+	ob_start();
+	?>
+	<section class="dv-faq-section alignfull" aria-labelledby="<?php echo esc_attr( $title_id ); ?>">
+		<div class="dv-faq-section__shell alignwide">
+			<header class="dv-faq-section__intro">
+				<p class="dv-kicker"><?php echo esc_html( $attributes['kicker'] ); ?></p>
+				<h2 id="<?php echo esc_attr( $title_id ); ?>"><?php echo esc_html( $attributes['title'] ); ?></h2>
+				<p><?php echo esc_html( $attributes['text'] ); ?></p>
+			</header>
+			<div class="dv-faq-section__items">
+				<?php if ( $query->have_posts() ) : ?>
+					<?php foreach ( $query->posts as $index => $faq_post ) : ?>
+						<details class="dv-faq-item wp-block-details"<?php echo 0 === $index ? ' open' : ''; ?>>
+							<summary><?php echo esc_html( get_the_title( $faq_post ) ); ?><span aria-hidden="true"></span></summary>
+							<div class="dv-faq-item__answer"><?php echo apply_filters( 'the_content', $faq_post->post_content ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
+						</details>
+					<?php endforeach; ?>
+				<?php elseif ( current_user_can( 'edit_posts' ) ) : ?>
+					<p class="dv-dynamic-hint"><?php esc_html_e( 'Cadastre perguntas em Perguntas frequentes no painel WordPress.', 'dv-visual' ); ?></p>
+				<?php endif; ?>
+			</div>
+		</div>
+		<?php if ( $schema_items ) : ?>
+			<script type="application/ld+json"><?php echo wp_json_encode( array( '@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => $schema_items ), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></script>
+		<?php endif; ?>
+	</section>
+	<?php
+	wp_reset_postdata();
+	return ob_get_clean();
+}
+add_shortcode( 'dv_faq', 'diniz_studio_faq_block' );
+
+/**
  * Render a menu assigned in Appearance > Menus.
  *
  * @param array $attributes Block attributes.
@@ -994,7 +1075,8 @@ function diniz_studio_menu_block( $attributes ) {
 	$cta_link    = diniz_studio_content_field( 'header_cta_url', 'option' );
 	$cta_url     = is_array( $cta_link ) && ! empty( $cta_link['url'] ) ? $cta_link['url'] : diniz_studio_menu_page_url( 'proposta' );
 	$cta_target  = is_array( $cta_link ) && ! empty( $cta_link['target'] ) ? $cta_link['target'] : '_self';
-	$menu_logo   = diniz_studio_content_field( 'brand_logo_light', 'option' ) ?: diniz_studio_content_field( 'brand_logo_dark', 'option' );
+	/* The offcanvas has a light glass surface, so it always uses the primary logo. */
+	$menu_logo   = diniz_studio_content_field( 'brand_logo_dark', 'option' ) ?: diniz_studio_content_field( 'brand_logo_light', 'option' );
 	$logo_markup = $menu_logo ? diniz_studio_acf_image( $menu_logo, 'full', 'dv-menu-offcanvas-logo', 'eager' ) : '';
 
 	ob_start();
@@ -1480,8 +1562,8 @@ function diniz_studio_solutions_page_grid() {
 	<section class="dv-solutions-page alignfull" aria-labelledby="dv-solutions-page-title">
 		<div class="dv-cpt-shell">
 			<header class="dv-solutions-page__heading">
-				<p class="dv-kicker dv-kicker-dark"><?php echo esc_html( diniz_studio_page_text( 'dv_page_section_1_kicker', 'Uma visão, muitas entregas' ) ); ?></p>
-				<h2 id="dv-solutions-page-title"><?php echo esc_html( diniz_studio_page_text( 'dv_page_section_1_title', 'Tudo conectado para sua marca ser clara, relevante e desejada.' ) ); ?></h2>
+				<p class="dv-kicker dv-kicker-dark"><?php esc_html_e( 'Uma visão, muitas entregas', 'dv-visual' ); ?></p>
+				<h2 id="dv-solutions-page-title"><?php esc_html_e( 'Tudo conectado para sua marca ser clara, relevante e desejada.', 'dv-visual' ); ?></h2>
 			</header>
 			<?php if ( $services->have_posts() ) : ?>
 				<div class="dv-solutions-page__grid" id="<?php echo esc_attr( $grid_id ); ?>">
@@ -1697,7 +1779,7 @@ function diniz_studio_portfolio_archive_shortcode() {
 		<section class="dv-portfolio-library" aria-labelledby="dv-portfolio-library-title">
 			<div class="dv-portfolio-shell">
 				<header class="dv-portfolio-library__heading">
-					<div><p class="dv-kicker"><?php echo esc_html( diniz_studio_page_text( 'dv_page_section_1_kicker', 'Explore os projetos', $page_id ) ); ?></p><h1 id="dv-portfolio-library-title"><?php echo esc_html( diniz_studio_page_text( 'dv_page_section_1_title', 'Cada desafio pede uma resposta única.', $page_id ) ); ?></h1></div>
+					<div><p class="dv-kicker"><?php esc_html_e( 'Explore os projetos', 'dv-visual' ); ?></p><h1 id="dv-portfolio-library-title"><?php esc_html_e( 'Cada desafio pede uma resposta única.', 'dv-visual' ); ?></h1></div>
 				</header>
 
 				<?php if ( $sector_terms ) : ?>
@@ -1763,7 +1845,7 @@ function diniz_studio_portfolio_archive_shortcode() {
 				<?php endif; ?>
 
 				<aside class="dv-portfolio-cta">
-					<div><span><?php echo esc_html( diniz_studio_page_text( 'dv_page_section_2_kicker', 'Seu projeto pode estar aqui', $page_id ) ); ?></span><h2><?php echo esc_html( diniz_studio_page_text( 'dv_page_section_2_title', 'Vamos construir o seu próximo case.', $page_id ) ); ?></h2><p><?php echo esc_html( diniz_studio_page_text( 'dv_page_section_2_text', 'Uma conversa estratégica para entender o momento da sua marca e desenhar o próximo passo.', $page_id ) ); ?></p></div>
+					<div><span><?php esc_html_e( 'Seu projeto pode estar aqui', 'dv-visual' ); ?></span><h2><?php esc_html_e( 'Vamos construir o seu próximo case.', 'dv-visual' ); ?></h2><p><?php esc_html_e( 'Uma conversa estratégica para entender o momento da sua marca e desenhar o próximo passo.', 'dv-visual' ); ?></p></div>
 					<a class="dv-portfolio-button dv-portfolio-button--primary" href="<?php echo esc_url( $primary_cta['url'] ); ?>" target="<?php echo esc_attr( $primary_cta['target'] ?: '_self' ); ?>"><?php echo esc_html( $primary_cta['title'] ); ?> <span aria-hidden="true">↗</span></a>
 				</aside>
 			</div>
@@ -1833,7 +1915,7 @@ function diniz_studio_portfolio_showcase_shortcode() {
 	<section class="dv-portfolio-section dv-portfolio-home alignfull" aria-labelledby="dv-portfolio-home-title">
 		<div class="dv-portfolio-shell">
 			<header class="dv-portfolio-home__heading">
-				<div><p class="dv-kicker"><?php echo esc_html( diniz_studio_global_text( 'dv_portfolio_home_kicker', 'Projetos selecionados' ) ); ?></p><h2 id="dv-portfolio-home-title"><?php echo esc_html( diniz_studio_global_text( 'dv_portfolio_home_title', 'Trabalho que fala por si.' ) ); ?></h2></div>
+				<div><p class="dv-kicker"><?php esc_html_e( 'Projetos selecionados', 'dv-visual' ); ?></p><h2 id="dv-portfolio-home-title"><?php esc_html_e( 'Trabalho que fala por si.', 'dv-visual' ); ?></h2></div>
 				<a class="dv-portfolio-home__all" href="<?php echo esc_url( $archive_url ); ?>"><?php esc_html_e( 'Ver portfólio completo', 'dv-visual' ); ?> <span aria-hidden="true">↗</span></a>
 			</header>
 			<?php if ( $query->have_posts() ) : ?>
