@@ -412,6 +412,61 @@ function diniz_studio_register_software_carousel_fields() {
 }
 add_action( 'acf/init', 'diniz_studio_register_software_carousel_fields', 21 );
 
+/**
+ * Keep the GitHub updater controls available on installations whose ACF field
+ * group is still stored in the database from an earlier theme version.
+ *
+ * @return void
+ */
+function diniz_studio_register_github_update_fields() {
+	if ( ! function_exists( 'acf_add_local_field' ) ) {
+		return;
+	}
+
+	$fields = array(
+		array(
+			'key'       => 'field_dv_updates_tab',
+			'label'     => __( 'Atualizações do tema', 'dv-visual' ),
+			'type'      => 'tab',
+			'placement' => 'top',
+			'parent'    => 'group_diniz_theme',
+		),
+		array(
+			'key'          => 'field_dv_github_repository_url',
+			'label'        => __( 'Repositório do tema no GitHub', 'dv-visual' ),
+			'name'         => 'github_repository_url',
+			'type'         => 'url',
+			'instructions' => __( 'Cole a URL completa do repositório. O WordPress consultará a Release mais recente.', 'dv-visual' ),
+			'placeholder'  => 'https://github.com/usuario/repositorio',
+			'parent'       => 'group_diniz_theme',
+		),
+		array(
+			'key'           => 'field_dv_github_release_asset',
+			'label'         => __( 'Nome do arquivo da Release', 'dv-visual' ),
+			'name'          => 'github_release_asset',
+			'type'          => 'text',
+			'instructions'  => __( 'A Release precisa conter este ZIP, com a pasta dv-visual na raiz.', 'dv-visual' ),
+			'default_value' => 'dv-visual.zip',
+			'placeholder'   => 'dv-visual.zip',
+			'wrapper'       => array( 'width' => 50 ),
+			'parent'        => 'group_diniz_theme',
+		),
+		array(
+			'key'     => 'field_dv_github_update_help',
+			'label'   => __( 'Como publicar uma atualização', 'dv-visual' ),
+			'name'    => 'github_update_help',
+			'type'    => 'message',
+			'message' => __( 'Crie uma GitHub Release com uma tag maior que a versão instalada, por exemplo v4.29.0, e anexe o ZIP acima. Depois acesse Painel → Atualizações e clique em Verificar novamente. Para repositório privado, defina DV_VISUAL_GITHUB_TOKEN no wp-config.php.', 'dv-visual' ),
+			'parent'  => 'group_diniz_theme',
+		),
+	);
+
+	foreach ( $fields as $field ) {
+		acf_add_local_field( $field );
+	}
+}
+add_action( 'acf/init', 'diniz_studio_register_github_update_fields', 23 );
+
 function diniz_studio_acf_notice() {
 	if ( current_user_can( 'activate_plugins' ) && ! function_exists( 'get_field' ) ) {
 		echo '<div class="notice notice-info"><p><strong>DV Visual:</strong> instale e ative o Advanced Custom Fields PRO para utilizar os campos personalizados e o conteúdo flexível incluídos no tema.</p></div>';

@@ -2,7 +2,7 @@
 
 Tema WordPress híbrido/clássico completo para WordPress 6.5 ou superior, criado para o portfólio da DV Visual.
 
-A versão 4.27.0 transforma Perguntas frequentes em um Custom Post Type completo: o título do post é a pergunta, o editor WordPress guarda a resposta, a ordem é controlada em Atributos da página e a seção da Home é atualizada automaticamente com Schema FAQPage. O menu administrativo acompanha o estado ativo/inativo do bloco sem recarregar. No cabeçalho, a **Logo secundária — menu transparente** aparece no topo da Home e volta para a Logo principal após a rolagem, com transição acessível e suporte a SVG, PNG e WebP. A versão preserva o Blog editorial, os breadcrumbs globais, o Scroll container dos cases, os carrosséis Swiper, o Bootstrap Offcanvas, o SEO de fallback e a responsividade completa.
+A versão 4.28.1 corrige a sobreposição das logos no cabeçalho transparente, impedindo que a logo secundária seja empurrada para baixo pela regra nativa do bloco de logo. As duas versões agora ocupam exatamente o mesmo encaixe vertical, antes e depois da rolagem. Também mantém a atualização nativa pelo GitHub: informe o repositório em **DV Visual → Scripts e Integrações → Atualizações do tema** e publique cada nova versão como uma GitHub Release contendo o arquivo `dv-visual.zip`, com a pasta `dv-visual` na raiz. A versão mantém Perguntas frequentes como Custom Post Type, o Blog editorial, os breadcrumbs globais, o Scroll container dos cases, os carrosséis Swiper, o Bootstrap Offcanvas, o SEO de fallback e a responsividade completa.
 
 ## Instalação
 
