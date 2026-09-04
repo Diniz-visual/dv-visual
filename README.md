@@ -2,7 +2,7 @@
 
 Tema WordPress híbrido/clássico completo para WordPress 6.5 ou superior, criado para o portfólio da DV Visual.
 
-A versão 4.28.1 corrige a sobreposição das logos no cabeçalho transparente, impedindo que a logo secundária seja empurrada para baixo pela regra nativa do bloco de logo. As duas versões agora ocupam exatamente o mesmo encaixe vertical, antes e depois da rolagem. Também mantém a atualização nativa pelo GitHub: informe o repositório em **DV Visual → Scripts e Integrações → Atualizações do tema** e publique cada nova versão como uma GitHub Release contendo o arquivo `dv-visual.zip`, com a pasta `dv-visual` na raiz. A versão mantém Perguntas frequentes como Custom Post Type, o Blog editorial, os breadcrumbs globais, o Scroll container dos cases, os carrosséis Swiper, o Bootstrap Offcanvas, o SEO de fallback e a responsividade completa.
+A versão 4.28.3 aumenta o padding vertical do menu fixo para melhorar o respiro entre a logo, a navegação e as bordas do cabeçalho, com ajuste específico para dispositivos móveis. O atualizador continua com o repositório `Diniz-visual/dv-visual` e o pacote `dv-visual.zip` embutidos: não há campos para configurar e a ausência de uma Release pública não gera alerta no painel. Cada nova versão deve ser publicada como uma GitHub Release contendo o ZIP com a pasta `dv-visual` na raiz.
 
 ## Instalação
 

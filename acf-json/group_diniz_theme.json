@@ -38,11 +38,7 @@
     {"key":"field_gtm_id","label":"Google Tag Manager","name":"gtm_id","type":"text","placeholder":"GTM-XXXXXXX"},
     {"key":"field_meta_pixel","label":"Meta Pixel","name":"meta_pixel","type":"text"},
     {"key":"field_custom_head","label":"Scripts no head","name":"custom_head","type":"textarea","rows":5},
-    {"key":"field_custom_body","label":"Scripts no final do body","name":"custom_body","type":"textarea","rows":5},
-    {"key":"field_dv_updates_tab","label":"Atualizações do tema","type":"tab","placement":"top"},
-    {"key":"field_dv_github_repository_url","label":"Repositório do tema no GitHub","name":"github_repository_url","type":"url","instructions":"Cole a URL completa do repositório. O WordPress consultará a Release mais recente.","placeholder":"https://github.com/usuario/repositorio"},
-    {"key":"field_dv_github_release_asset","label":"Nome do arquivo da Release","name":"github_release_asset","type":"text","instructions":"A Release precisa conter este ZIP, com a pasta dv-visual na raiz.","default_value":"dv-visual.zip","placeholder":"dv-visual.zip","wrapper":{"width":50}},
-    {"key":"field_dv_github_update_help","label":"Como publicar uma atualização","name":"github_update_help","type":"message","message":"Crie uma GitHub Release com uma tag maior que a versão instalada, por exemplo v4.29.0, e anexe o ZIP acima. Depois acesse Painel → Atualizações e clique em Verificar novamente. Para repositório privado, defina DV_VISUAL_GITHUB_TOKEN no wp-config.php."}
+    {"key":"field_custom_body","label":"Scripts no final do body","name":"custom_body","type":"textarea","rows":5}
   ],
   "location": [[{"param":"options_page","operator":"==","value":"dv-visual-settings"}],[{"param":"options_page","operator":"==","value":"acf-options-cabecalho-e-menus"}],[{"param":"options_page","operator":"==","value":"dv-visual-breadcrumbs"}],[{"param":"options_page","operator":"==","value":"acf-options-rodape-e-contato"}],[{"param":"options_page","operator":"==","value":"acf-options-scripts-e-integracoes"}]],
   "menu_order": 0,

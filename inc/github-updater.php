@@ -2,8 +2,8 @@
 /**
  * Native GitHub Release updater for the DV Visual theme.
  *
- * The repository is selected in DV Visual > Scripts e Integrações. Every
- * release must include an installable ZIP whose root directory is dv-visual.
+ * The official repository and package name are embedded in the theme. Every
+ * public release must include an installable ZIP whose root is dv-visual.
  *
  * @package DinizStudio
  */
@@ -13,24 +13,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
- * Return the configured GitHub repository URL.
+ * Return the official GitHub repository URL embedded in the theme.
  *
- * A constant can override the dashboard value on managed installations:
+ * A constant can still override it on managed installations:
  * define( 'DV_VISUAL_GITHUB_REPOSITORY', 'https://github.com/owner/repo' );
  *
  * @return string
  */
 function diniz_studio_github_repository_url() {
+	$url = 'https://github.com/Diniz-visual/dv-visual';
+
 	if ( defined( 'DV_VISUAL_GITHUB_REPOSITORY' ) && DV_VISUAL_GITHUB_REPOSITORY ) {
-		return esc_url_raw( (string) DV_VISUAL_GITHUB_REPOSITORY );
+		$url = (string) DV_VISUAL_GITHUB_REPOSITORY;
 	}
 
-	$value = function_exists( 'get_field' ) ? get_field( 'github_repository_url', 'option' ) : '';
-	if ( ! $value ) {
-		$value = get_option( 'options_github_repository_url', '' );
-	}
-
-	return esc_url_raw( (string) $value );
+	return esc_url_raw( (string) apply_filters( 'diniz_studio_github_repository_url', $url ) );
 }
 
 /**
@@ -39,11 +36,7 @@ function diniz_studio_github_repository_url() {
  * @return string
  */
 function diniz_studio_github_release_asset_name() {
-	$value = function_exists( 'get_field' ) ? get_field( 'github_release_asset', 'option' ) : '';
-	if ( ! $value ) {
-		$value = get_option( 'options_github_release_asset', 'dv-visual.zip' );
-	}
-
+	$value = apply_filters( 'diniz_studio_github_release_asset_name', 'dv-visual.zip' );
 	$value = sanitize_file_name( (string) $value );
 	return $value ?: 'dv-visual.zip';
 }
@@ -139,6 +132,9 @@ function diniz_studio_github_latest_release( $force = false ) {
 	}
 
 	$status = (int) wp_remote_retrieve_response_code( $response );
+	if ( 404 === $status ) {
+		return new WP_Error( 'dv_github_release_unavailable', __( 'Ainda não existe uma Release pública do tema.', 'dv-visual' ) );
+	}
 	if ( 200 !== $status ) {
 		return new WP_Error(
 			'dv_github_http_error',
@@ -203,6 +199,10 @@ function diniz_studio_github_theme_update( $transient ) {
 	$release    = diniz_studio_github_latest_release();
 
 	if ( is_wp_error( $release ) ) {
+		if ( 'dv_github_release_unavailable' === $release->get_error_code() ) {
+			delete_site_transient( 'dv_visual_github_update_error' );
+			return $transient;
+		}
 		set_site_transient( 'dv_visual_github_update_error', $release->get_error_message(), 30 * MINUTE_IN_SECONDS );
 		return $transient;
 	}
@@ -250,7 +250,7 @@ function diniz_studio_github_http_headers( $args, $url ) {
 add_filter( 'http_request_args', 'diniz_studio_github_http_headers', 20, 2 );
 
 /**
- * Clear update caches whenever the repository settings or theme change.
+ * Clear update caches whenever the theme changes.
  *
  * @return void
  */
@@ -262,19 +262,6 @@ function diniz_studio_clear_github_update_cache() {
 	delete_site_transient( 'dv_visual_github_update_error' );
 	delete_site_transient( 'update_themes' );
 }
-
-/**
- * Clear caches after saving the ACF options page.
- *
- * @param int|string $post_id Saved ACF object identifier.
- * @return void
- */
-function diniz_studio_clear_github_cache_after_options_save( $post_id ) {
-	if ( 'options' === $post_id || 'option' === $post_id ) {
-		diniz_studio_clear_github_update_cache();
-	}
-}
-add_action( 'acf/save_post', 'diniz_studio_clear_github_cache_after_options_save', 30 );
 
 /**
  * Clear the cached release after an update finishes.
@@ -289,6 +276,22 @@ function diniz_studio_clear_github_cache_after_upgrade( $upgrader, $options ) {
 	}
 }
 add_action( 'upgrader_process_complete', 'diniz_studio_clear_github_cache_after_upgrade', 10, 2 );
+
+/**
+ * Remove errors saved by the configurable updater when this embedded updater
+ * first becomes active.
+ *
+ * @return void
+ */
+function diniz_studio_clear_legacy_github_update_error() {
+	if ( DINIZ_STUDIO_VERSION === get_option( 'dv_visual_updater_version', '' ) ) {
+		return;
+	}
+
+	delete_site_transient( 'dv_visual_github_update_error' );
+	update_option( 'dv_visual_updater_version', DINIZ_STUDIO_VERSION, false );
+}
+add_action( 'admin_init', 'diniz_studio_clear_legacy_github_update_error', 1 );
 
 /**
  * Surface GitHub connection errors only on update-related admin screens.

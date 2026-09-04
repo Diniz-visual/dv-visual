@@ -190,10 +190,10 @@ html body > .wp-site-blocks { padding-block:0!important; }
   padding:.85rem 0;
   transition:min-height .3s ease,padding .3s ease;
 }
-/* Cabeçalho fixo compacto: preserva a leitura do conteúdo após a rolagem. */
+/* Cabeçalho fixo confortável: mantém respiro vertical após a rolagem. */
 .dv-header.dv-header-scrolled>.wp-block-group {
-  min-height:48px;
-  padding:.38rem 0;
+  min-height:64px;
+  padding:.7rem 0;
 }
 .dv-header--static { position:relative; }
 .home .wp-site-blocks { position:relative; }
@@ -2118,7 +2118,7 @@ a.dv-software-card:focus-visible { outline:3px solid rgba(20,184,181,.28);outlin
   .dv-site-brand .wp-block-site-logo img,
   .dv-site-brand .custom-logo,
   .dv-site-brand .dv-managed-logo { max-width:150px;height:40px; }
-  .dv-header.dv-header-scrolled>.wp-block-group { min-height:46px;padding:.3rem 0; }
+  .dv-header.dv-header-scrolled>.wp-block-group { min-height:56px;padding:.55rem 0; }
   .dv-header.dv-header-scrolled .dv-site-brand .wp-block-site-logo img,
   .dv-header.dv-header-scrolled .dv-site-brand .custom-logo,
   .dv-header.dv-header-scrolled .dv-site-brand .dv-managed-logo { max-width:145px;height:36px; }
