@@ -103,6 +103,7 @@ function diniz_studio_has_external_seo_plugin() {
 	return defined('WPSEO_VERSION') || defined('RANK_MATH_VERSION') || defined('AIOSEO_VERSION') || defined('SEOPRESS_VERSION');
 }
 function diniz_studio_document_title_from_seo( $title ) {
+	if ( function_exists( 'diniz_studio_document_title' ) ) { return $title; }
 	if ( ! diniz_studio_has_external_seo_plugin() && is_singular() ) {
 		$seo=trim((string)diniz_studio_editable_value('seo_title',get_queried_object_id(),'')); if($seo){return $seo;}
 	}
@@ -110,6 +111,8 @@ function diniz_studio_document_title_from_seo( $title ) {
 }
 add_filter('pre_get_document_title','diniz_studio_document_title_from_seo',20);
 function diniz_studio_native_seo_meta() {
+	// Current releases already render these tags through the shared renderer.
+	if ( function_exists( 'diniz_studio_document_meta' ) ) { return; }
 	if ( diniz_studio_has_external_seo_plugin() || ! is_singular() ) { return; }
 	$post_id=get_queried_object_id();
 	$title=trim((string)diniz_studio_editable_value('seo_title',$post_id,get_the_title($post_id)));

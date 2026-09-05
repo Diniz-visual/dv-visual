@@ -659,8 +659,12 @@ function diniz_studio_get_managed_home_slides() {
 
 	$slides = array();
 	$fields = array_keys( diniz_studio_home_slide_field_keys() );
+	$legacy = diniz_studio_content_field( 'dv_hero_slides', 'option' );
+	$legacy = is_array( $legacy ) ? array_values( $legacy ) : array();
+	$front  = (int) get_option( 'page_on_front' );
 
-	foreach ( $posts as $post ) {
+	foreach ( $posts as $index => $post ) {
+		$legacy_slide = isset( $legacy[ $index ] ) && is_array( $legacy[ $index ] ) ? $legacy[ $index ] : array();
 		$slide = array(
 			'title' => get_the_title( $post ),
 			'text'  => get_the_excerpt( $post ),
@@ -673,6 +677,21 @@ function diniz_studio_get_managed_home_slides() {
 
 		if ( ! $slide['text'] ) {
 			$slide['text'] = get_the_excerpt( $post );
+		}
+
+		/*
+		 * The former options repeater can still contain edits made before the
+		 * Home — Slides manager was introduced. Use its support text only when
+		 * the managed slide is empty, preserving the new editor as the primary
+		 * source while making existing content visible again.
+		 */
+		if ( ! $slide['text'] && ! empty( $legacy_slide['text'] ) ) {
+			$slide['text'] = $legacy_slide['text'];
+		}
+
+		/* The generic page Hero remains a final compatibility fallback. */
+		if ( ! $slide['text'] && 0 === $index && $front ) {
+			$slide['text'] = diniz_studio_content_field( 'hero_text', $front );
 		}
 
 		$slides[] = $slide;

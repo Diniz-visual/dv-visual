@@ -83,6 +83,65 @@ function diniz_studio_github_token() {
 }
 
 /**
+ * Return the local update package stored beside the installed theme folder.
+ *
+ * This fallback is useful in local and staging environments: replacing
+ * wp-content/themes/dv-visual.zip with a newer package makes the native
+ * WordPress update available without requiring GitHub credentials.
+ *
+ * @return string
+ */
+function diniz_studio_local_update_package_path() {
+	$path = trailingslashit( get_theme_root() ) . 'dv-visual.zip';
+	return (string) apply_filters( 'diniz_studio_local_update_package_path', $path );
+}
+
+/**
+ * Read the DV Visual version directly from a local ZIP package.
+ *
+ * @return array<string,string>|false|WP_Error
+ */
+function diniz_studio_local_theme_release() {
+	$package = diniz_studio_local_update_package_path();
+	if ( ! $package || ! is_readable( $package ) ) {
+		return false;
+	}
+
+	if ( ! class_exists( 'ZipArchive' ) ) {
+		return new WP_Error( 'dv_local_zip_support_missing', __( 'O servidor não possui suporte para ler arquivos ZIP.', 'dv-visual' ) );
+	}
+
+	$zip    = new ZipArchive();
+	$opened = $zip->open( $package );
+	if ( true !== $opened ) {
+		return new WP_Error( 'dv_local_zip_invalid', __( 'O pacote local dv-visual.zip não pôde ser aberto.', 'dv-visual' ) );
+	}
+
+	$stylesheet = $zip->getFromName( 'dv-visual/style.css' );
+	$zip->close();
+	if ( false === $stylesheet ) {
+		return new WP_Error( 'dv_local_zip_structure', __( 'O pacote local precisa conter dv-visual/style.css.', 'dv-visual' ) );
+	}
+
+	if ( ! preg_match( '/^[ \t\/*#@]*Version:\s*([^\r\n]+)/mi', $stylesheet, $matches ) ) {
+		return new WP_Error( 'dv_local_zip_version_missing', __( 'O pacote local não informa uma versão válida.', 'dv-visual' ) );
+	}
+
+	$version = sanitize_text_field( trim( $matches[1] ) );
+	if ( ! preg_match( '/^\d+(?:\.\d+){1,3}(?:[-+][0-9A-Za-z.-]+)?$/', $version ) ) {
+		return new WP_Error( 'dv_local_zip_version_invalid', __( 'A versão do pacote local é inválida.', 'dv-visual' ) );
+	}
+
+	return array(
+		'version'   => $version,
+		'url'       => admin_url( 'themes.php' ),
+		'package'   => 'dv-visual-local://update',
+		'published' => gmdate( 'c', (int) filemtime( $package ) ),
+		'source'    => 'local',
+	);
+}
+
+/**
  * Fetch and normalize the latest GitHub Release.
  *
  * @param bool $force Ignore the short theme-side cache.
@@ -100,7 +159,9 @@ function diniz_studio_github_latest_release( $force = false ) {
 	}
 
 	$cache_key = 'dv_visual_gh_' . md5( $repository['owner'] . '/' . $repository['repo'] );
-	if ( ! $force ) {
+	if ( $force ) {
+		delete_site_transient( $cache_key );
+	} else {
 		$cached = get_site_transient( $cache_key );
 		if ( is_array( $cached ) ) {
 			return $cached;
@@ -133,7 +194,7 @@ function diniz_studio_github_latest_release( $force = false ) {
 
 	$status = (int) wp_remote_retrieve_response_code( $response );
 	if ( 404 === $status ) {
-		return new WP_Error( 'dv_github_release_unavailable', __( 'Ainda não existe uma Release pública do tema.', 'dv-visual' ) );
+		return new WP_Error( 'dv_github_release_unavailable', __( 'O GitHub retornou 404: o repositório pode estar privado ou indisponível, ou não ter uma Release estável publicada. Repositórios privados exigem autenticação no servidor WordPress.', 'dv-visual' ) );
 	}
 	if ( 200 !== $status ) {
 		return new WP_Error(
@@ -196,14 +257,25 @@ function diniz_studio_github_theme_update( $transient ) {
 
 	$stylesheet = get_template();
 	$current    = isset( $transient->checked[ $stylesheet ] ) ? (string) $transient->checked[ $stylesheet ] : DINIZ_STUDIO_VERSION;
-	$release    = diniz_studio_github_latest_release();
+	$local      = diniz_studio_local_theme_release();
+	$remote     = diniz_studio_github_latest_release();
+	$release    = is_array( $local ) ? $local : false;
 
-	if ( is_wp_error( $release ) ) {
-		if ( 'dv_github_release_unavailable' === $release->get_error_code() ) {
-			delete_site_transient( 'dv_visual_github_update_error' );
-			return $transient;
-		}
-		set_site_transient( 'dv_visual_github_update_error', $release->get_error_message(), 30 * MINUTE_IN_SECONDS );
+	/* A local fallback must not hide a newer GitHub release. */
+	if ( is_array( $remote ) && ( ! $release || version_compare( $remote['version'], $release['version'], '>' ) ) ) {
+		$release = $remote;
+	}
+	if ( is_wp_error( $remote ) ) {
+		set_site_transient( 'dv_visual_github_update_error', $remote->get_error_message(), 30 * MINUTE_IN_SECONDS );
+	} else {
+		delete_site_transient( 'dv_visual_github_update_error' );
+	}
+
+	$transient->response  = isset( $transient->response ) && is_array( $transient->response ) ? $transient->response : array();
+	$transient->no_update = isset( $transient->no_update ) && is_array( $transient->no_update ) ? $transient->no_update : array();
+	unset( $transient->response[ $stylesheet ], $transient->no_update[ $stylesheet ] );
+
+	if ( ! $release ) {
 		return $transient;
 	}
 
@@ -225,6 +297,41 @@ function diniz_studio_github_theme_update( $transient ) {
 	return $transient;
 }
 add_filter( 'pre_set_site_transient_update_themes', 'diniz_studio_github_theme_update', 20 );
+
+/**
+ * Copy the local package to a disposable file for the native upgrader.
+ *
+ * Returning the original path would allow WordPress to delete the package
+ * after installation, so the upgrader always receives a temporary copy.
+ *
+ * @param false|string|WP_Error $reply      Existing pre-download result.
+ * @param string                $package    Package URL or local sentinel.
+ * @param WP_Upgrader           $upgrader   Current upgrader instance.
+ * @param array<string,mixed>   $hook_extra Upgrade context.
+ * @return false|string|WP_Error
+ */
+function diniz_studio_local_update_pre_download( $reply, $package, $upgrader, $hook_extra ) {
+	unset( $upgrader, $hook_extra );
+	if ( 'dv-visual-local://update' !== $package ) {
+		return $reply;
+	}
+
+	$source = diniz_studio_local_update_package_path();
+	if ( ! is_readable( $source ) ) {
+		return new WP_Error( 'dv_local_zip_missing', __( 'O pacote local dv-visual.zip não está disponível.', 'dv-visual' ) );
+	}
+
+	$temporary = wp_tempnam( 'dv-visual.zip' );
+	if ( ! $temporary || ! copy( $source, $temporary ) ) {
+		if ( $temporary && file_exists( $temporary ) ) {
+			wp_delete_file( $temporary );
+		}
+		return new WP_Error( 'dv_local_zip_copy_failed', __( 'O WordPress não conseguiu preparar o pacote local para atualização.', 'dv-visual' ) );
+	}
+
+	return $temporary;
+}
+add_filter( 'upgrader_pre_download', 'diniz_studio_local_update_pre_download', 10, 4 );
 
 /**
  * Authenticate GitHub's asset API when a private repository token is set.
@@ -264,6 +371,18 @@ function diniz_studio_clear_github_update_cache() {
 }
 
 /**
+ * Honor WordPress' "Check again" before its own update callback runs.
+ *
+ * @return void
+ */
+function diniz_studio_force_github_update_check() {
+	if ( current_user_can( 'update_themes' ) && ! empty( $_GET['force-check'] ) ) {
+		diniz_studio_clear_github_update_cache();
+	}
+}
+add_action( 'load-update-core.php', 'diniz_studio_force_github_update_check', 1 );
+
+/**
  * Clear the cached release after an update finishes.
  *
  * @param WP_Upgrader $upgrader Upgrader instance.
@@ -288,7 +407,7 @@ function diniz_studio_clear_legacy_github_update_error() {
 		return;
 	}
 
-	delete_site_transient( 'dv_visual_github_update_error' );
+	diniz_studio_clear_github_update_cache();
 	update_option( 'dv_visual_updater_version', DINIZ_STUDIO_VERSION, false );
 }
 add_action( 'admin_init', 'diniz_studio_clear_legacy_github_update_error', 1 );
@@ -304,7 +423,7 @@ function diniz_studio_github_update_notice() {
 	}
 
 	$screen = function_exists( 'get_current_screen' ) ? get_current_screen() : null;
-	if ( ! $screen || ! in_array( $screen->id, array( 'themes', 'update-core' ), true ) ) {
+	if ( ! $screen || ! in_array( $screen->id, array( 'themes', 'update-core', 'themes-network', 'update-core-network' ), true ) ) {
 		return;
 	}
 
@@ -318,3 +437,4 @@ function diniz_studio_github_update_notice() {
 	}
 }
 add_action( 'admin_notices', 'diniz_studio_github_update_notice' );
+add_action( 'network_admin_notices', 'diniz_studio_github_update_notice' );

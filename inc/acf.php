@@ -94,6 +94,103 @@ function diniz_studio_prepare_secondary_logo_field( $field ) {
 add_filter( 'acf/prepare_field/key=field_brand_logo_light', 'diniz_studio_prepare_secondary_logo_field' );
 
 /**
+ * Give every Home hero support-text field the same clear purpose.
+ *
+ * The theme keeps compatibility with the former options repeater and the
+ * generic page Hero, so the labels must make it obvious that all three values
+ * occupy the same position directly below the title.
+ *
+ * @param array<string,mixed> $field ACF field definition.
+ * @return array<string,mixed>
+ */
+function diniz_studio_prepare_hero_support_text_field( $field ) {
+	$field['label']        = __( 'Texto abaixo do título', 'dv-visual' );
+	$field['instructions'] = __( 'Texto curto exibido logo abaixo do título principal do Hero.', 'dv-visual' );
+	return $field;
+}
+add_filter( 'acf/prepare_field/key=field_dv_home_slide_text', 'diniz_studio_prepare_hero_support_text_field' );
+add_filter( 'acf/prepare_field/key=field_dv_hero_slide_text', 'diniz_studio_prepare_hero_support_text_field' );
+add_filter( 'acf/prepare_field/key=field_hero_text', 'diniz_studio_prepare_hero_support_text_field' );
+
+/**
+ * Keep the managed Home slide support-text control available immediately.
+ *
+ * Existing installations can retain an older database copy of the ACF group.
+ * Registering this field by key prevents the control from disappearing until
+ * the administrator manually synchronizes Local JSON.
+ *
+ * @return void
+ */
+function diniz_studio_register_home_slide_support_text_field() {
+	if ( ! function_exists( 'acf_add_local_field' ) ) {
+		return;
+	}
+
+	acf_add_local_field(
+		array(
+			'key'          => 'field_dv_home_slide_text',
+			'label'        => __( 'Texto abaixo do título', 'dv-visual' ),
+			'name'         => 'dv_home_slide_text',
+			'type'         => 'textarea',
+			'instructions' => __( 'Texto curto exibido logo abaixo do título principal do Hero.', 'dv-visual' ),
+			'rows'         => 3,
+			'new_lines'    => '',
+			'menu_order'   => 3,
+			'parent'       => 'group_dv_home_slides',
+		)
+	);
+}
+add_action( 'acf/init', 'diniz_studio_register_home_slide_support_text_field', 18 );
+
+/**
+ * Keep the fixed-header appearance controls available on existing installs.
+ *
+ * ACF can keep an older database copy of the global options group after a
+ * theme update. Registering these fields by key makes the controls available
+ * immediately while Local JSON remains the source for fresh installations.
+ *
+ * @return void
+ */
+function diniz_studio_register_fixed_header_fields() {
+	if ( ! function_exists( 'acf_add_local_field' ) ) {
+		return;
+	}
+
+	$fields = array(
+		array(
+			'key'           => 'field_dv_header_fixed_background_color',
+			'label'         => __( 'Cor de fundo do cabeçalho fixo', 'dv-visual' ),
+			'name'          => 'header_fixed_background_color',
+			'type'          => 'color_picker',
+			'instructions'  => __( 'Aplicada ao cabeçalho depois que a página é rolada.', 'dv-visual' ),
+			'default_value' => '#0A2540',
+			'return_format' => 'string',
+			'wrapper'       => array( 'width' => 50 ),
+			'parent'        => 'group_diniz_theme',
+		),
+		array(
+			'key'           => 'field_dv_header_fixed_padding_vertical',
+			'label'         => __( 'Padding vertical do cabeçalho fixo', 'dv-visual' ),
+			'name'          => 'header_fixed_padding_vertical',
+			'type'          => 'range',
+			'instructions'  => __( 'Define o espaço acima e abaixo do conteúdo após a rolagem.', 'dv-visual' ),
+			'default_value' => 15,
+			'min'           => 0,
+			'max'           => 48,
+			'step'          => 1,
+			'append'        => 'px',
+			'wrapper'       => array( 'width' => 50 ),
+			'parent'        => 'group_diniz_theme',
+		),
+	);
+
+	foreach ( $fields as $field ) {
+		acf_add_local_field( $field );
+	}
+}
+add_action( 'acf/init', 'diniz_studio_register_fixed_header_fields', 18 );
+
+/**
  * Keep the global breadcrumb controls available immediately.
  *
  * Local JSON remains the source for new installations. Registering each field
