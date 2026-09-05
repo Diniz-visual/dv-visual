@@ -9,9 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'DINIZ_STUDIO_VERSION', '4.28.3' );
+define( 'DINIZ_STUDIO_VERSION', '4.28.9' );
 
 require_once get_template_directory() . '/inc/acf.php';
+require_once get_template_directory() . '/inc/editable-content.php';
 require_once get_template_directory() . '/inc/post-types.php';
 require_once get_template_directory() . '/inc/permalinks.php';
 require_once get_template_directory() . '/inc/render.php';

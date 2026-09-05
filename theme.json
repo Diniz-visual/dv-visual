@@ -1,0 +1,193 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "useRootPaddingAwareAlignments": true,
+    "layout": {
+      "contentSize": "760px",
+      "wideSize": "1280px"
+    },
+    "color": {
+      "defaultPalette": false,
+      "defaultGradients": false,
+      "palette": [
+        { "slug": "ink", "name": "Azul profundo", "color": "#0A2540" },
+        { "slug": "paper", "name": "Gelo turquesa", "color": "#EEF9F8" },
+        { "slug": "white", "name": "Branco", "color": "#FFFFFF" },
+        { "slug": "accent", "name": "Turquesa vivo", "color": "#14B8B5" },
+        { "slug": "teal", "name": "Turquesa profundo", "color": "#0E8F8C" },
+        { "slug": "aqua", "name": "Água", "color": "#6FE0DA" },
+        { "slug": "muted", "name": "Azul acinzentado", "color": "#6B8495" },
+        { "slug": "lime", "name": "Lima", "color": "#A8E063" }
+      ],
+      "gradients": [
+        { "slug": "glass-light", "name": "Vidro claro", "gradient": "linear-gradient(135deg,rgba(255,255,255,.82) 0%,rgba(111,224,218,.2) 100%)" },
+        { "slug": "ocean-depth", "name": "Profundidade oceânica", "gradient": "linear-gradient(135deg,#071C31 0%,#0A2540 48%,#0E5C67 100%)" },
+        { "slug": "aurora", "name": "Aurora DV", "gradient": "linear-gradient(135deg,#14B8B5 0%,#6FE0DA 52%,#A8E063 100%)" }
+      ]
+    },
+    "spacing": {
+      "units": ["px", "rem", "vw", "%"],
+      "spacingSizes": [
+        { "slug": "xs", "name": "XS", "size": "0.75rem" },
+        { "slug": "s", "name": "S", "size": "1.25rem" },
+        { "slug": "m", "name": "M", "size": "clamp(1.75rem,1.4rem + 1vw,2.5rem)" },
+        { "slug": "l", "name": "L", "size": "clamp(3rem,2.2rem + 2.4vw,5rem)" },
+        { "slug": "xl", "name": "XL", "size": "clamp(4.5rem,3.2rem + 3.4vw,7rem)" }
+      ]
+    },
+    "typography": {
+      "fluid": true,
+      "fontFamilies": [
+        { "slug": "display", "name": "Manrope", "fontFamily": "'Manrope', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" },
+        { "slug": "body", "name": "Manrope", "fontFamily": "'Manrope', Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" }
+      ],
+      "fontSizes": [
+        { "slug": "xs", "name": "Muito pequeno", "size": "0.75rem" },
+        { "slug": "s", "name": "Pequeno", "size": "0.875rem" },
+        { "slug": "m", "name": "Médio", "size": "1rem" },
+        { "slug": "l", "name": "Grande", "size": "clamp(1.1rem,1rem + .5vw,1.3rem)" },
+        { "slug": "xl", "name": "Título", "size": "clamp(2rem,1.55rem + 2.2vw,4.25rem)" },
+        { "slug": "xxl", "name": "Display", "size": "clamp(2.75rem,1.9rem + 4vw,6rem)" }
+      ]
+    },
+    "border": {
+      "radius": true,
+      "color": true,
+      "style": true,
+      "width": true
+    },
+    "shadow": {
+      "defaultPresets": false,
+      "presets": [
+        { "slug": "soft", "name": "Suave", "shadow": "0 24px 80px rgba(10,37,64,.13)" },
+        { "slug": "glass", "name": "Vidro", "shadow": "0 32px 100px rgba(4,25,45,.22), inset 0 1px 0 rgba(255,255,255,.3)" }
+      ]
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "var:preset|color|paper",
+      "text": "var:preset|color|ink"
+    },
+    "spacing": {
+      "padding": {
+        "left": "clamp(1rem,2.5vw,3rem)",
+        "right": "clamp(1rem,2.5vw,3rem)"
+      }
+    },
+    "typography": {
+      "fontFamily": "var:preset|font-family|body",
+      "fontSize": "var:preset|font-size|m",
+      "lineHeight": "1.65"
+    },
+    "elements": {
+      "heading": {
+        "typography": {
+          "fontFamily": "var:preset|font-family|display",
+          "fontWeight": "760",
+          "lineHeight": "1.02",
+          "letterSpacing": "-0.045em"
+        }
+      },
+      "h1": {
+        "typography": {
+          "fontSize": "clamp(2.5rem,1.85rem + 3.1vw,5.65rem)",
+          "fontWeight": "760",
+          "lineHeight": "0.98",
+          "letterSpacing": "-0.06em"
+        }
+      },
+      "h2": {
+        "typography": {
+          "fontSize": "clamp(2rem,1.55rem + 2.2vw,4.25rem)",
+          "fontWeight": "760",
+          "lineHeight": "1.02",
+          "letterSpacing": "-0.055em"
+        }
+      },
+      "h3": {
+        "typography": {
+          "fontSize": "clamp(1.4rem,1.2rem + 1vw,2.2rem)",
+          "fontWeight": "760",
+          "lineHeight": "1.1",
+          "letterSpacing": "-0.04em"
+        }
+      },
+      "h4": {
+        "typography": {
+          "fontSize": "clamp(1.125rem,1.04rem + .4vw,1.45rem)",
+          "fontWeight": "760",
+          "lineHeight": "1.2",
+          "letterSpacing": "-0.025em"
+        }
+      },
+      "button": {
+        "border": { "radius": "999px" },
+        "color": {
+          "background": "var:preset|color|accent",
+          "text": "var:preset|color|ink"
+        },
+        "typography": {
+          "fontSize": "var:preset|font-size|s",
+          "fontWeight": "800"
+        },
+        "spacing": {
+          "padding": {
+            "top": "0.95rem",
+            "bottom": "0.95rem",
+            "left": "1.45rem",
+            "right": "1.45rem"
+          }
+        }
+      },
+      "link": {
+        "color": { "text": "var:preset|color|ink" }
+      }
+    },
+    "blocks": {
+      "core/navigation": {
+        "typography": {
+          "fontSize": "var:preset|font-size|s",
+          "fontWeight": "650"
+        }
+      },
+      "core/post-title": {
+        "typography": { "fontSize": "var:preset|font-size|xl" }
+      },
+      "core/image": {
+        "border": { "radius": "22px" }
+      },
+      "core/details": {
+        "border": {
+          "color": "rgba(10,37,64,.12)",
+          "radius": "16px",
+          "width": "1px"
+        },
+        "spacing": {
+          "padding": {
+            "top": "1.2rem",
+            "right": "1.2rem",
+            "bottom": "1.2rem",
+            "left": "1.2rem"
+          }
+        }
+      }
+    }
+  },
+  "templateParts": [
+    { "name": "header", "title": "Cabeçalho DV", "area": "header" },
+    { "name": "footer", "title": "Rodapé DV", "area": "footer" }
+  ],
+  "customTemplates": [
+    { "name": "blank", "title": "Página em branco", "postTypes": ["page"] },
+    { "name": "landing", "title": "Landing page", "postTypes": ["page"] },
+    { "name": "portfolio", "title": "Portfólio", "postTypes": ["page"] },
+    { "name": "agency", "title": "Estúdio", "postTypes": ["page"] },
+    { "name": "solutions", "title": "Soluções", "postTypes": ["page"] },
+    { "name": "products", "title": "Produtos", "postTypes": ["page"] },
+    { "name": "contact", "title": "Contato / Orçamento", "postTypes": ["page"] },
+    { "name": "help-center", "title": "Central de ajuda", "postTypes": ["page"] }
+  ]
+}

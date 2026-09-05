@@ -2,7 +2,13 @@
 
 Tema WordPress híbrido/clássico completo para WordPress 6.5 ou superior, criado para o portfólio da DV Visual.
 
-A versão 4.28.3 aumenta o padding vertical do menu fixo para melhorar o respiro entre a logo, a navegação e as bordas do cabeçalho, com ajuste específico para dispositivos móveis. O atualizador continua com o repositório `Diniz-visual/dv-visual` e o pacote `dv-visual.zip` embutidos: não há campos para configurar e a ausência de uma Release pública não gera alerta no painel. Cada nova versão deve ser publicada como uma GitHub Release contendo o ZIP com a pasta `dv-visual` na raiz.
+A versão 4.28.9 corrige a consulta de atualizações: **Painel → Atualizações → Verificar novamente** também renova o cache do GitHub, e o tema escolhe a maior versão disponível entre a Release e o ZIP local. Falhas de acesso ao GitHub são exibidas no painel. Mantém a correção do **Texto abaixo do título** do Hero e os controles de cor e padding do cabeçalho fixo.
+
+## Atualizações pelo GitHub
+
+O repositório `Diniz-visual/dv-visual` e o arquivo `dv-visual.zip` já estão embutidos no tema. Para distribuir sem configuração por instalação, o repositório e a Release precisam estar acessíveis publicamente. Um repositório privado exige autenticação no servidor com `DV_VISUAL_GITHUB_TOKEN`; nunca inclua um token no ZIP distribuído.
+
+Publique uma Release estável com tag `4.28.9` ou `v4.28.9` e anexe o ZIP instalável. A tag, a versão em `style.css`, a constante em `functions.php` e o `package.json` devem coincidir. Mudar apenas o título da Release não muda a versão consultada pelo WordPress. O ZIP deve conter a pasta raiz `dv-visual/`. Publicar o painel Sites não publica uma Release no GitHub.
 
 ## Instalação
 
